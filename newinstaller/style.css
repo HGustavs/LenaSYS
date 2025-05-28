@@ -368,7 +368,7 @@ input[type=checkbox], input[type=radio] {
     padding: 1.25rem;
     border: 1px solid #888;
     width: 80%;
-    max-width: 37.5rem;
+    max-width: 90%;
     border-radius: 0.75rem;
 }
 

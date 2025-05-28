@@ -66,7 +66,6 @@ function returnedDugga(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	if(data['opt']=="SAVDU"){
-		//$('#submission-receipt').html(`${data['duggaTitle']}\n\nDirect link (to be submitted in canvas)\n${data['link']}\n\nHash\n${data['hash']}\n\nHash password\n${data['hashpwd']}`);
 		showReceiptPopup();
 	}
 
@@ -74,8 +73,10 @@ function returnedDugga(data)
 	if(data['param']=="UNK"){
 		alert("UNKNOWN DUGGA!");
 	}else{		
-		dta=jQuery.parseJSON(data['param']);
-		$(".submit-button").removeClass("btn-disable");
+		dta=JSON.parse(data['param']);
+		document.querySelectorAll(".submit-button").forEach(el => {
+			el.classList.remove("btn-disable");
+		});
 		if (data["answer"] !== null && data["answer"] !== "UNK") {			
 			var previousAnswer = data['answer'].split(' ');
 			bitarray=previousAnswer[3].split(',');
@@ -87,19 +88,22 @@ function returnedDugga(data)
 	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
 			// No feedback
 	} else {
-			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-			var feedbackArr = data["feedback"].split("||");
-			for (var k=feedbackArr.length-1;k>=0;k--){
-				var fb_tmp = feedbackArr[k].split("%%");
-				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			} 		
-			fb += "</tbody></table>";
-			document.getElementById('feedbackTable').innerHTML = fb;		
-			document.getElementById('feedbackBox').style.display = "block";
-			$("#showFeedbackButton").css("display","block");
+		var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+		var feedbackArr = data["feedback"].split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+		fb += "</tbody></table>";
+		document.getElementById('feedbackTable').innerHTML = fb;		
+		document.getElementById('feedbackBox').style.display = "block";
+		document.getElementById("showFeedbackButton").style.display = "block";
 	}
-	$("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").prependTo("#content");
+	document.getElementById("content").append(document.getElementById("submitButtonTable"));
+	if(document.getElementById("lockedDuggaInfo")){
+		document.getElementById("content")
+		.insertBefore(document.getElementById("lockedDuggaInfo"), document.getElementById("content"));
+	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"],data["duggaTitle"]);
 	if (running) {
 		renderId = requestAnimationFrame(redrawgfx);
@@ -155,12 +159,12 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
+		document.getElementById("duggaStats").style.display='block';
 	}
 	var canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext("2d");
 
-	dta = jQuery.parseJSON(param);
+	dta = JSON.parse(param);
   document.getElementById('helptxt').innerHTML=dta[0].Text;
 	if (uanswer !== "UNK") {
 		var previousAnswer = uanswer.split(' ');
@@ -214,7 +218,7 @@ function fitToContainer()
 {
 	// Make it visually fill the positioned parent
 	
-	divw = $("#content").width();
+	let divw = document.getElementById("content").clientWidth;
 	if (divw < window.innerHeight) {
 		ctx.width = divw;
 		ctx.height = divw;

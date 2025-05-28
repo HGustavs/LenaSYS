@@ -50,9 +50,10 @@ When you have installed your Docker desktop, you can run Docker containers, but 
 4. Now you have the LenaSYS repository, so you need to access the new directory in the terminal by typing: `cd LenaSYS/dockerenv/`.
 <img src="Shared/Documentation/docker_images/terminal3.png" width="512">
 
-5. Here you need to build a few images and containers, and to do that run the command for Windows: `docker-compose up --build`
-or macOS: `docker compose up --build`.
-NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
+5. Now you need to choose which script to run based on your operating system. The scripts are located at: `LenaSYS/dockerenv/`
+- **On Windows:** Here you need to build a few images and containers, and to do that run the command for Windows: `.\setup.bat`. NOTE: You need to keep open Docker desktop program/app and do not turn off, otherwise this command will show an error and will not work.
+
+- **On macOS/Linux:** There is a `setup.sh` script and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder and builds the Docker containers. If none of them steps work, then try to follow to change the file permissions [here](#using-linux-or-mac), and then run the script again.
 <img src="Shared/Documentation/docker_images/terminal4.png" width="512">
 
 6. Docker has finished building images and containers when the terminal stops printing out or/and shows a blue apache-php name. NOTE: Do not close down the terminal while docker is running, otherwise containers will shutdown.
@@ -72,7 +73,7 @@ NOTE: You need to keep open Docker desktop program/app and do not turn off, othe
 
 11. Before you install the LenaSYS, it is good to know that the text-input which says `Hostname`, needs to be `db`, not `localhost` and you need check/turn on `Use Distributed Environment`-checkbox. Also when entering root user credentials, type in root user: `root` and root password: `password`, because all default values is set in docker-compose-yml.
 
-12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](README.md/#new-installer-steps) or [old LenaSYS installer](README.md/#old-installer-steps).
+12. To install the LenaSYS, you need to follow instructions for [new LenaSYS installer](#new-installer-steps) or [old LenaSYS installer](#old-installer-steps).
 
 #### Using linux or mac?
 Make sure you set the appropriate file permissions for LenaSYS. The easiest way to do this is to run the command `sudo chmod -R 777 LenaSYS`.
@@ -90,7 +91,7 @@ After changing the file permissions recursively over the repository, all the fil
 
 1. If you want remove all containers, then first stop running containers which you can follow this step [stop containers in Docker](#stop-containers-in-docker).
 
-2. After that run the command: `docker-compose down` in the terminal.
+2. After that run the command: `docker compose down` in the terminal.
 <img src="Shared/Documentation/docker_images/terminal7.png" width="512">
 
 3. Now your terminal says removed which means containers are removed.
@@ -158,7 +159,10 @@ You may receive a warning saying Apple cannot verify that XAMPP is free from mal
     extension=php_pdo_sqlite.dll
    ```
 
-**macOS Specifics**
+**On macOS/Linux:** 
+- There is a `setup.sh` script which located at: `LenaSYS/xampp/` and run one of the following commands: `sudo ./setup.sh` or, if the the first command doesn't work, then run `sudo bash ./setup.sh`. If you can't run the script, make sure it is executable. To do so, type `sudo chmod +x setup.sh`. Then try running the script again. The `./setup.sh` script does changes file permissions and ownership for entire LenaSYS folder. If none of them steps work, then try to follow to change the file permissions [here](#macos-specifics), and then run the script again.
+
+#### macOS Specifics
 - On Mac, you need to set extra permissions on the folder `xamppfiles`. 
 - To do this:
   1. Right-click on the `xamppfiles` folder and select **Get Info** (or press `Cmd + I`).

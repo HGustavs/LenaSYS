@@ -478,7 +478,7 @@
 					else
 						echo   "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById(\"searchinput\").value;myTable.reRender();' type='button'>";
 
-					echo     "<img alt='search icon' id='lookingGlassSVG' style='height:25px;' src='../Shared/icons/LookingGlass.svg'/>";
+					echo     "<img alt='search icon' id='lookingGlassSVG' src='../Shared/icons/LookingGlass.svg'/>";
 					echo   "</button>";
 					echo "</li>";
 					if ($requestedService == "fileed.php" && (hasAccess($_SESSION["uid"], $_SESSION["courseid"], "w") || $_SESSION["superuser"] == 1)) {
@@ -496,14 +496,14 @@
 			// Presents the filterButton and its connected dropdown menu.
       		if($requestedService=="accessed.php"){
 					echo "<li id='select' class='navFilterWrapper' onclick='pressFilter();' onmouseleave='leaveFilter()'; />";
-					echo   "<span id='filterButton'; ' name='filter'; >";
+					echo   "<div id='filterButton'; ' name='filter'; >";
 					echo     "<img alt='filter icon' class='navButt filterButt' src='../Shared/icons/filter_icon.svg' style='pointer-events: none' />";
 					echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1' />";
 					echo       "<div id='filterOptions'></div>";
 					echo       "<div id='columnfilter'></div>";
 					echo       "<div id='customfilter'></div>";
 					echo     "</div>";
-					echo   "</span>";
+					echo   "</div>";
 					echo "</li>";
 			}
 

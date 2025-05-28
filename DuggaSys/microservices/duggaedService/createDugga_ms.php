@@ -6,7 +6,7 @@
 include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../sharedMicroservices/getUid_ms.php";
-include_once "./retrieveDuggaedService_ms.php";
+include_once "../curlService.php";
 
 date_default_timezone_set("Europe/Stockholm");
 
@@ -28,17 +28,25 @@ $log_uuid = getOP('log__uuid');
 $userid = getUid();
 $debug = "NONE!";
 
+header('Content-Type: application/json');
+
+$dataToSend = [
+  'debug' => $debug,
+  'userid' => $userid,
+  'cid' => $cid,
+  'coursevers' => $coursevers,
+  'log_uuid' => $log_uuid
+];
+
 if (!(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid) || hasAccess($userid, $cid, 'st')))) {
-  $debug = "Access not granted";
-  $retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
-  echo json_encode($retrievedData);
+  $dataToSend['debug'] = "Access not granted";
+  echo callMicroservicePOST("duggaedService/retrieveDuggaedService_ms.php", $dataToSend, true);
   return;
 }
 
 if (strcmp($opt, "SAVDUGGA") !== 0) {
-  $debug = "OPT does not match";
-  $retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
-  echo json_encode($retrievedData);
+  $dataToSend['debug'] = "OPT does not match";
+  echo callMicroservicePOST("duggaedService/retrieveDuggaedService_ms.php", $dataToSend, true);
   return;
 }
 
@@ -79,5 +87,13 @@ if (!$query->execute()) {
   $debug .= "Error updating dugga " . $error[2];
 }
 
-$retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
-echo json_encode($retrievedData);
+// update data
+$dataToSend = [
+  'debug' => $debug,
+  'userid' => $userid,
+  'cid' => $cid,
+  'coursevers' => $coursevers,
+  'log_uuid' => $log_uuid
+];
+
+echo callMicroservicePOST("duggaedService/retrieveDuggaedService_ms.php", $dataToSend, true);

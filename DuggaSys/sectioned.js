@@ -1073,8 +1073,32 @@ async function createFABItem(kind, itemtitle, comment) {
       await newItem(itemtitle); // Wait until the current item is created before creating the next item
     }
     // console.log(numberOfItems + " " + itemtitle + "(s) created");  
+    closeFabDropdown();
     numberOfItems = 1; // Reset number of items to create
-  }
+  } 
+}
+
+// handles closing of the dropdown menus called via fab-buttons
+function closeFabDropdown(){
+
+  headerDropdownListVisible = document.querySelector('.fab-btn-list2').checkVisibility();
+  floatingDropdownListVisible = document.querySelector('.fab-btn-list').checkVisibility();
+
+  if(headerDropdownListVisible && floatingDropdownListVisible){
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+    document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+
+		document.querySelector('.fab-btn-list2').style.display="none";
+		document.querySelector('.fab-btn-list').style.display="none";
+	}
+  else if(headerDropdownListVisible){
+		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list2').style.display="none";
+	}
+  else if(floatingDropdownListVisible){
+		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
+		document.querySelector('.fab-btn-list').style.display="none";
+	}
 }
 
 function addColorsToTabSections(kind, visible, spkind) {
@@ -1206,43 +1230,47 @@ function cancelDelete () {
 // update selected directory
 function updateSelectedDir() {
   var selectedDir = document.getElementById("selectDir").value;
-  $.ajax({
-    url: "./sectioned.php",
-    type: "POST",
-    data: {
-      action: "updateSelectedDir",
-      selectedDir: selectedDir,
-      cid: cidFromServer
-    },
-    success: function (data) {
-      console.log('POST-request call successful');
-      console.log("Response: ", data);
-      toast("success",'Directory has been updated succesfully',5)
 
-      // Parse the JSON response
-      var response;
-      try {
-        response = JSON.parse(data);
-      } catch (e) {
-        console.error('Failed to parse JSON:', e);
-        return;
-      }
+      fetch("./sectioned.php", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          action: "updateSelectedDir",
+          selectedDir: selectedDir,
+          cid: cidFromServer
+        })
+      })
+      .then(response => response.text())
+      .then(data => {
+        console.log('POST-request call successful');
+        console.log("Response: ", data);
+        toast("success", 'Directory has been updated succesfully', 5);
 
-      // Handle the response
-      //TODO:: Server is sending html response instead of JSON
-      if (response.status === "success") {
-        console.log('Update successful');
-      } else {
-        console.error('Update failed:', response.message);
-      }
-    },
-    error: function (xhr, status, error) {
-      console.error('Update failed:', error);
-      console.log("Status: ", status);
-      console.log("Error: ", error);
-      toast("error",'Directory update failed',7)
-    }
-  });
+        // Parse the JSON response
+        var response;
+        try {
+          response = JSON.parse(data);
+        } catch (e) {
+          console.error('Failed to parse JSON:', e);
+          return;
+        }
+
+        // Handle the response
+        //TODO:: Server is sending html response instead of JSON
+        if (response.status === "success") {
+          console.log('Update successful');
+        } else {
+          console.error('Update failed:', response.message);
+        }
+      })
+      .catch(error => {
+        console.error('Update failed:', error);
+        console.log("Error: ", error);
+        toast("error", 'Directory update failed', 7);
+      });
+
 }
 
 //----------------------------------------------------------------------------------
@@ -1585,7 +1613,6 @@ function toggleButtonClickHandler() {
 var itemKinds = [];
 function returnedSection(data) {
   retdata = data;
-  if (data['debug'] != "NONE!") alert(data['debug']);
 
   // Data variable is put in localStorage which is then used in Codeviewer
   // To get the right order when going backward and forward in code examples
@@ -1665,7 +1692,6 @@ function returnedSection(data) {
       document.getElementById("FABStatic").style.display = "None";
       document.getElementById("FABStatic2").style.display = "None";
       // remove course-label margin
-      document.getElementById("course-label").style.marginRight = "10px";
     }
 
     // Hide som elements if to narrow
@@ -1798,6 +1824,22 @@ function returnedSection(data) {
             str += "</td>";
           }
         }
+
+        //Mobile view for code examples
+        if (itemKind === 2 && (data['writeaccess'] || data['studentteacher'])){
+           var param = {
+            'exampleid': item['link'],
+            'courseid': querystring['courseid'],
+            'coursename': querystring['coursename'],
+            'cvers': querystring['coursevers'],
+            'lid': item['lid']
+          };
+          str += `<div class='flex-row-container'>`;
+          str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("codeviewer.php",
+            hideState, "", item['entryname'], false, param)}</span></div>`;
+          str += '</div>'
+        }
+
           //Mobile view of title and date for dugga/test items
         if (itemKind === 3 && (data['writeaccess'] || data['studentteacher'])) {             
           var param = {
@@ -1981,8 +2023,12 @@ function returnedSection(data) {
             'cvers': querystring['coursevers'],
             'lid': item['lid']
           };
-          str += `<div class='ellipsis nowrap'><span>${makeanchor("codeviewer.php",
-            hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          str += `<div class='ellipsis nowrap hide-on-mobile'><span>${makeanchor("codeviewer.php",
+          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          if (!data['writeaccess'] || data['studentteacher']){
+          str += `<div class='ellipsis nowrap show-on-mobile'><span>${makeanchor("codeviewer.php",
+          hideState, "margin-left:8px;", item['entryname'], false, param)}</span></div>`;
+          }
         } else if (itemKind == 3) {
           // Test / Dugga
           var param = {
@@ -2082,7 +2128,7 @@ function returnedSection(data) {
         }
 
         // github icon for moments (itemKind 4 is moments)
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 4 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
@@ -2091,7 +2137,7 @@ function returnedSection(data) {
         }
 
         // github icon for code (itemKind 2 is code)
-        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 2 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
@@ -2101,7 +2147,7 @@ function returnedSection(data) {
         }
 
         // Refresh button for moments
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 4 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='moment'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
@@ -2111,7 +2157,7 @@ function returnedSection(data) {
         }
 
         // Refresh button
-        /*if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
+        /*if (itemKind === 1 && (data['writeaccess'] || data['studentteacher'])) {
            str += `<td style='width:32px;'>`;
            str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                    id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
@@ -2127,7 +2173,7 @@ function returnedSection(data) {
         }
 
         // Testing implementation
-        if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 1 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
@@ -2173,7 +2219,7 @@ function returnedSection(data) {
         }
 
         // Cog Wheel for headers
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
@@ -2189,7 +2235,7 @@ function returnedSection(data) {
         }
 
         // Cog Wheel
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) { 
+        if (itemKind !== 0 && (data['writeaccess'] || data['studentteacher'])) { 
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
@@ -2210,7 +2256,7 @@ function returnedSection(data) {
         }
 
         // Trashcan for headers
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
@@ -2219,7 +2265,7 @@ function returnedSection(data) {
         }
         
         // Trashcan for items
-        if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind !== 0 && (data['writeaccess'] || data['studentteacher'])) {
 
           // Will run marked items independent of lenght
           console.log('selectedItemList: ' + selectedItemList.length);
@@ -2354,6 +2400,7 @@ function returnedSection(data) {
             order: str
           }, "SECTION");
           resave = true;
+          location.reload();
           return false;
         }
 
@@ -2828,18 +2875,12 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
-document.addEventListener("mouseover", function (e) {
-  // showFabList(e);
-  FABMouseOver(e);
-});
-
 document.addEventListener("mouseout", function (e) {
   FABMouseOut(e);
 });
 
 document.addEventListener("mousedown", function (e) {
   mouseDown(e);
-
   if (e.button == 0) {
     FABDown(e);
   }
@@ -2847,6 +2888,10 @@ document.addEventListener("mousedown", function (e) {
 
 document.addEventListener("mouseup", function (e) {
   mouseUp(e);
+});
+
+document.addEventListener("mouseover", function (e) {
+  FABMouseOver(e);
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -2985,7 +3030,12 @@ window.addEventListener("keyup", function (event) {
 document.addEventListener("scroll", function (e) {
   if (typeof (retdata) !== "undefined") {
     localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode ,window.scrollY);
-  }
+    
+    //closes fab-element-dropdown if scrolling (and visible)
+    if(document.querySelector('.fab-btn-list2').checkVisibility() == true){
+			closeFabDropdown();
+		}
+	}
 });
 
 // Functions to prevent collapsing when clicking icons
@@ -3736,24 +3786,28 @@ function createExamples(momentID, isManual) {
 
   //wrapped ajax in promise in order to return promise to the function that called it. see setInterval
   return new Promise((resolve, reject) => {
-    $.ajax({
-      url: "sectionedservice.php",
-      type: "POST",
-      data: { 'lid': lid, 'opt': 'CREGITEX' },
-      dataType: "json",
-      success: function (response) {
-        console.log("AJAX request succeeded. Response:", response);
-        lastUpdatedCodeExampes = Date.now();
-        if (isManual) {
-          console.log("Code examples have been manually updated successfully!");
-        }
-        resolve(response);
+    fetch("sectionedservice.php", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
-      error: function (xhr, status, error) {
-        console.error("AJAX request failed. Status:", status);
-        console.error("Error:", error);
-        console.log("Failed to manually update code examples!");
+      body: new URLSearchParams({
+        'lid': lid,
+        'opt': 'CREGITEX'
+      })
+    })
+    .then(response => response.json())
+    .then(response => {
+      console.log("Fetch request succeeded. Response:", response);
+      lastUpdatedCodeExampes = Date.now();
+      if (isManual) {
+        console.log("Code examples have been manually updated successfully!");
       }
+      resolve(response);
+    })
+    .catch(error => {
+      console.error("Fetch request failed. Error:", error);
+      console.log("Failed to manually update code examples!");
     });
   });
 }
@@ -4185,7 +4239,7 @@ function validateDate2(ddate, dialogid) {
 function validateSectName(name) {
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
-  if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+  if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_\-.,]+$/)) {
 
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";
@@ -4833,25 +4887,31 @@ function storeCodeExamples(cid, codeExamplesContent, githubURL, fileName){
     }
 
     //Send data to sectioned.php through POST
-    $.ajax({
-       url: 'sectionedservice.php',
-       type: 'POST',
-       data: {
+    fetch('sectionedservice.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
         courseid: cid,
         githubURL: githubURL,
         codeExampleName: fileName,
         opt: 'GITCODEEXAMPLE',
         codeExampleData: AllJsonData
-       },
-       success: function(response) {
-          console.log(response);
-       },
-       error: function(xhr, status, error) {
-        console.error('AJAX Error:', status, error);
-      }
-    });   
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      location.replace(location.href);
+    })
+    .catch(error => {
+      console.error('Fetch Error:', error);
+    });
+    
     confirmBox('closeConfirmBox');
-    location.replace(location.href);
+        
+
 }
 function updateTemplate() {
   templateNo = document.getElementById("templateno").value;

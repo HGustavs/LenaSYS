@@ -5,6 +5,7 @@ date_default_timezone_set("Europe/Stockholm");
 include_once "../../../Shared/sessions.php";
 include_once "../../../Shared/basic.php";
 include_once "../sharedMicroservices/getUid_ms.php";
+include_once "../curlService.php";
 
 // Connect to database and start session.
 pdoConnect();
@@ -57,11 +58,18 @@ if(strcmp($opt,"SAVDUGGA")===0){
 
 }
 
-include_once("retrieveDuggaedService_ms.php");
 $log_uuid=getOP('log__uuid');
 $cid = getOP('cid');
 $coursevers = getOP('coursevers');
-$retrievedData = retrieveDuggaedService($pdo, $debug, $userid, $cid, $coursevers, $log_uuid);
-echo json_encode($retrievedData);
 
-?>
+header('Content-Type: application/json');
+
+$dataToSend = [
+  'debug' => $debug,
+  'userid' => $userid,
+  'cid' => $cid,
+  'coursevers' => $coursevers,
+  'log_uuid' => $log_uuid
+];
+
+echo callMicroservicePOST("duggaedService/retrieveDuggaedService_ms.php", $dataToSend, true);

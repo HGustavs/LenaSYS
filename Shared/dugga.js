@@ -2087,12 +2087,12 @@ function showSecurityPopup()
    //document.getElementById("#overlay").style.display="block";
 }
 
-function showDuggaInfoPopup()
-{
+function showDuggaInfoPopup() {
+	var receiptBox = document.getElementById("receiptBox");
+	var duggaInfoBox = document.getElementById("duggaInfoBox");
 
-	if (document.getElementById("#receiptBox").style.display!="flex"){
-		document.getElementById("#duggaInfoBox").style.display="flex";
-		//document.getElementById("#overlay").style.display="block";
+	if (receiptBox && duggaInfoBox && receiptBox.style.display != "flex") {
+		duggaInfoBox.style.display = "flex";
 	}
 }
 
@@ -2495,36 +2495,48 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked,duggaTitle){
-		var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
-		// Get proper dates
-		if(submitted!=="UNK") {
-			var t = submitted.split(/[- :]/);
-			submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-		}
-		if(marked!=="UNK") {
-			var tt = marked.split(/[- :]/);
-			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
-		}
+	var str="<div style='display:flex;justify-content:center;align-items:center;'><div id='duggaTitleSibling' class='LightBox'>";
+	// Get proper dates
+	if(submitted!=="UNK") {
+		var t = submitted.split(/[- :]/);
+		submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+	}
+	if(marked!=="UNK") {
+		var tt = marked.split(/[- :]/);
+		marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+	}
 
-		if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
-			duggaTitle = "Untitled dugga";
-		}
-  
-		str+="<div class='' style='margin:4px;'></div></div>";
+	if(duggaTitle == undefined || duggaTitle == "UNK" || duggaTitle == "null" || duggaTitle == ""){	
+		duggaTitle = "Untitled dugga";
+	}
 
-		if(loadVariantFlag && variantsArr.length > 1){	//If the 'Next variant' button is set to be visable (Teachers only). 
-			str+="<div id='nextVariantBtn' ><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
-		}
-		else{	//If the 'Next variant' button is set to not be visable (Students).
-			str+="<div>"+duggaTitle+"</div>";
-		}
+	str+="<div class='' style='margin:4px;'></div></div>";
 
-		str+="</div>";
-		document.getElementById("#duggaStatus").remove();
-		document.querySelectorAll("<td id='duggaStatus' align='center'>"+str+"</td>").after("#menuHook");
-		document.getElementById("#menuHook").style.display="none";
-		// Adds dugga title next to the text "Instructions"
-		document.querySelector('h3:contains("Instructions")').innerHTML=duggaTitle + " - Instructions";
+	if(loadVariantFlag && variantsArr.length > 1){	//If the 'Next variant' button is set to be visable (Teachers only). 
+		str+="<div id='nextVariantBtn' ><input class='submit-button large-button' style='width:auto;' type='button' value='"+duggaTitle+" V:"+variantValue+"' onclick='selectNextVariant();' /></div>"; 
+	}
+	else{	//If the 'Next variant' button is set to not be visable (Students).
+		str+="<div>"+duggaTitle+"</div>";
+	}
+
+	str+="</div>";
+	var duggaStatusEl = document.getElementById("duggaStatus");
+	if (duggaStatusEl) duggaStatusEl.remove();
+
+	var menuHook = document.getElementById("menuHook");
+	if (menuHook) {
+		var td = document.createElement("td");
+		td.id = "duggaStatus";
+		td.setAttribute("align", "center");
+		td.innerHTML = str;
+		menuHook.parentNode.insertBefore(td, menuHook.nextSibling);
+		menuHook.style.display = "none";
+	}
+
+	var heading = document.querySelector("h3");
+	if (heading && heading.textContent.includes("Instructions")) {
+		heading.innerHTML = duggaTitle + " - Instructions";
+	}
 }
 
 
@@ -2539,24 +2551,7 @@ function FABMouseOver(e) {
 				element.classList.toggle('scale-out');
 			}
 		});
-	} else if (e.target.id === "addElement") {
-		var e2=document.querySelectorAll('.fab-btn-sm2');
-		var eL2=document.querySelector('.fab-btn-list2');
-
-		e2.forEach(element2 => {
-			if(element2.classList.contains('scale-out')){
-				eL2.style.display="block";
-				element2.classList.toggle('scale-out');
-			}
-		});
-		
-		document.querySelector('#addElement').classList.add('spin');
-
-		
-		setTimeout(function() {
-			document.querySelector('#addElement').classList.remove('spin');
-		}, 1000); 
-	}
+	} 
 }
 
 //----------------------------------------------------------------------------------
@@ -2568,19 +2563,42 @@ function FABMouseOut(e) {
 		document.querySelector('.fab-btn-sm').classList.toggle('scale-out');
 		document.querySelector('.fab-btn-list').style.display="none";
 	}
-	else if (document.querySelector('.fab-btn-sm2') && !document.querySelector('.fab-btn-sm2').classList.contains('scale-out') &&
-	!e.relatedTarget.closest(".fixed-action-button2") && !e.relatedTarget.classList.contains("fixed-action-button2")) {
-		document.querySelector('.fab-btn-sm2').classList.toggle('scale-out');
-		document.querySelector('.fab-btn-list2').style.display="none";
-	}
-	
 }
 //----------------------------------------------------------------------------------
 // FABDown : FAB Mouse Down
 //----------------------------------------------------------------------------------
 function FABDown(e)
 {
-	//Unused at the moment but might be useful in the future to handle pressing down with mouse on FAB
+	// Handling: floating fab-button
+	if (e.target.id == "fabBtn") {
+		var eL=document.querySelector('.fab-btn-list');
+		var e1=document.querySelectorAll('.fab-btn-sm');
+		
+		e1.forEach(element => {
+			if(element.classList.contains('scale-out')){
+				eL.style.display="block";
+				element.classList.toggle('scale-out');
+			}
+		});
+	} 
+	// Handling: header fab-button
+	else if (e.target.id == "addElement") {
+		var e2=document.querySelectorAll('.fab-btn-sm2');
+		var eL2=document.querySelector('.fab-btn-list2');
+
+		e2.forEach(element2 => {
+			if(element2.classList.contains('scale-out')){
+				eL2.style.display="block";
+				element2.classList.toggle('scale-out');
+			}
+		});
+	}
+	// ignore if on fab-icon, handling done within onclick function
+	else if(document.querySelector('.fab-btn-list2')){
+		if (!e.target.classList.contains('btn-floating')){
+			closeFabDropdown();
+		}
+	}
 }
 
 //----------------------------------------------------------------------------------

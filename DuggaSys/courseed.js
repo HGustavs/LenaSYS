@@ -64,6 +64,9 @@ function updateCourse() {
 	const courseid = "C" + cid;
 	const token = document.getElementById("githubToken").value;
 
+	console.log("updateCourse() => Input element:", courseGitURL);
+	console.log("updateCourse() => courseGitURL value before fetch:", courseGitURL || "NO INPUT");
+
 	const url = "../DuggaSys/gitcommitService.php";
 	const params = {
 		githubURL: courseGitURL,
@@ -78,52 +81,51 @@ function updateCourse() {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(params)
-	})
-		.then(response => {
-			if (!response.ok) {
-				return response.json().then(errorData => {
-					handleError(response.status, errorData);
-					throw new Error('Response not ok');
-				});
-			}
-			// Show dialog
-			document.getElementById("editCourse").style.display = "none";
+	}).then(response => {
+		if (!response.ok) {
+			return response.json().then(errorData => {
+				handleError(response.status, errorData);
+				throw new Error('Response not ok');
+			});
+		}
+		// Show dialog
+		document.getElementById("editCourse").style.display = "none";
 
-			// Updates the course (except the course GitHub repo.
-			// Course GitHub repo is updated in the next block of code)
-			document.getElementById("overlay").style.display = "none";
-			AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
-			localStorage.setItem('courseid', courseid);
-			localStorage.setItem('updateCourseName', true);
+		// Updates the course (except the course GitHub repo.
+		// Course GitHub repo is updated in the next block of code)
+		document.getElementById("overlay").style.display = "none";
+		AJAXService("UPDATE", { cid: cid, coursename: coursename, visib: visib, coursecode: coursecode, courseGitURL: courseGitURL }, "COURSE");
+		localStorage.setItem('courseid', courseid);
+		localStorage.setItem('updateCourseName', true);
 
-			const cookieValue = `; ${document.cookie}`;
-			const parts = cookieValue.split(`; ${"missingToken"}=`);
+		const cookieValue = `; ${document.cookie}`;
+		const parts = cookieValue.split(`; ${"missingToken"}=`);
 
-			if (parts[1] != 1) {
-				//Check if courseGitURL has a value
-				if (courseGitURL) {
-					//Check if fetchGitHubRepo returns true
-					if (fetchGitHubRepo(courseGitURL)) {
-						localStorage.setItem('courseGitHubRepo', courseGitURL);
-						//If courseGitURL has a value, display a message stating the update (with github-link) worked
-						toast("success", "Course " + coursename + " updated with new GitHub-link!", 5);
-						updateGithubRepo(courseGitURL, cid);
-					}
-					//Else: get error message from the fetchGitHubRepo function.
-
-				} else {
-					localStorage.setItem('courseGitHubRepo', " ");
-					//If courseGitURL has no value, display an update message
-					toast("success", "Course " + coursename + " updated!", 5);
+		if (parts[1] != 1) {
+			//Check if courseGitURL has a value
+			if (courseGitURL) {
+				//Check if fetchGitHubRepo returns true
+				if (fetchGitHubRepo(courseGitURL)) {
+					localStorage.setItem('courseGitHubRepo', courseGitURL);
+					//If courseGitURL has a value, display a message stating the update (with github-link) worked
+					toast("success", "Course " + coursename + " updated with new GitHub-link!", 5);
+					updateGithubRepo(courseGitURL, cid);
 				}
+				//Else: get error message from the fetchGitHubRepo function.
+
+			} else {
+				localStorage.setItem('courseGitHubRepo', " ");
+				//If courseGitURL has no value, display an update message
+				toast("success", "Course " + coursename + " updated!", 5);
 			}
-			else {
-				toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
-			}
-		})
-		.catch(error => {
-			console.error("Fetch error:", error);
-		});
+		}
+		else {
+			toast("warning", "Git token is missing/expired. Commits may not be able to be fetched", 7);
+		}
+	}).catch(error => {
+		console.error("Fetch error:", error);
+	});
+
 	function handleError(status, errorData) {
 		switch (status) {
 			case 403:
@@ -288,6 +290,7 @@ async function fetchLatestCommit(gitHubURL) {
 //XMLHttpRequest, same as fetchGitHubRepo
 function updateGithubRepo(githubURL, cid) {
 	// Used to return success(true) or error(false) to the calling function
+	console.log("updateGithubRepo() => Updating githubURL:", githubURL || "NO INPUT");
 	var dataCheck;
 
 	const xhr = new XMLHttpRequest();
@@ -371,6 +374,7 @@ function createVersion() {
 }
 
 function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl) {
+	console.log("selectCourse() => Selecting course to edit - gitHubUrl:", gitHubUrl || "NO INPUT");
 	let items = document.querySelectorAll(".item");
 	items.forEach(item => {
 		item.style.border = "none";
@@ -731,7 +735,21 @@ function returnedCourse(data) {
 				str += "<div class='ellipsis' style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['coursecode'] + "]'>" + courseBegin + courseEnd + "</a></div>";
 				str += "<span style='margin-bottom: 0px'>";
 
-				str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+				//str += "<span><img alt='course settings icon' tabindex='0' class='courseSettingIcon' id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\",\"" + item['courseGitURL'] + "\");' title='Edit \"" + item['coursename'] + "\" '></span>";
+
+				// safe handling of quotes in HTML attributes
+				const gitUrl = item['courseGitURL'] ? item['courseGitURL'].replace(/"/g, '&quot;') : '';
+				str += `<span>
+				  <img 
+					alt='course settings icon' 
+					tabindex='0' 
+					class='courseSettingIcon' 
+					id='dorf' 
+					style='position: relative; top: 2px;' 
+					src='../Shared/icons/Cogwheel.svg' 
+					onclick='selectCourse("${item['cid']}", "${htmlFix(item['coursename'])}", "${item['coursecode']}", "${item['visibility']}", "${item['activeversion']}", "${item['activeedversion']}", "${gitUrl}")' 
+					title='Edit "${item['coursename']}" '>
+				</span>`;
 
 
 				str += "</span>";
