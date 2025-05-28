@@ -33,8 +33,6 @@ Deletes a code example and its related data from the database if the user has th
    - Type: string
    - Description: List entry ID. Stored as int in the database                  
 
-
-
 ## Calling Methods
 - POST
 
@@ -90,8 +88,6 @@ Updates a box title of a code example when a user with appropriate permissions e
 - Parameter: $userid
    - Type: int
    - Description: User ID. Stored as int in the database
-
-
 
 ## Calling Methods
 - POST
@@ -166,7 +162,7 @@ Handles updates of code examples, and then retrieving all updated data from the 
    - Description: Contains data associated with the updated code example
 
 ## Examples of Use
-`UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;`
+UPDATE codeexample SET runlink = :playlink , examplename = :examplename, sectionname = :sectionname WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
 
 ### Microservices Used
 - retrieveCodeviewerService_ms.php
@@ -242,7 +238,7 @@ Updates the content of a box associated with a certain code example, and then re
    - Description: Contains data associated with the updated content of a code example
 
 ## Examples of Use
-` UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid; `
+UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, fontsize=:fontsize, wordlistid=:wordlist WHERE boxid=:boxid AND exampleid=:exampleid;
 
 ### Microservices Used
 - getUid_ms.php
@@ -294,8 +290,7 @@ Retrieves updated data from the database and stores it in an array. The file out
    - Description: Logs UUID for the event                     
 
 ## Calling Methods
-- function call
-
+- POST
 
 ## Output Data and Format
 - Output: $array
@@ -303,10 +298,10 @@ Retrieves updated data from the database and stores it in an array. The file out
    - Description: Contains data associated with a code example
 
 ## Examples of Use
-`SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;`
+SELECT exampleid, sectionname, examplename, beforeid, afterid FROM codeexample WHERE cid = :cid AND cversion = :cvers ORDER BY sectionname, examplename;
 
 ### Microservices Used
-- 
+- getUid_ms.php
 
 ---
 
@@ -345,10 +340,12 @@ Used when you create a new code example for a course and choose a template to di
 - function call
 
 ## Output Data and Format
-- 
+- Output: empty response body
+   - Type: text/html
+   - Description: No data is returned to the caller, only databases are updated.
 
 ## Examples of Use
-`UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;`
+UPDATE codeexample SET templateid = :templateno WHERE exampleid = :exampleid AND cid = :cid AND cversion = :cvers;
 
 ### Microservices Used
 - getUid_ms.php

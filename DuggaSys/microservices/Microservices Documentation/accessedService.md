@@ -386,7 +386,8 @@ The data is only retrieved for users who have specific access.
 -
 
 ### Microservices Used
-None
+- getUid_ms.php
+- retrieveUsername_ms.php
 
 ---
 
@@ -450,6 +451,7 @@ Handles updating user's properties in the 'user' table. Can be only be done by s
 
 ### Microservices Used
 - retrieveAccessedService_ms.php
+- getUid_ms.php
 
 ---
 
