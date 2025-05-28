@@ -95,15 +95,24 @@ class Modal {
             $id,
             'File Permission Error',
             '
-                Failed to copy course files. Please run the following command: <code>chmod -R 755 /LenaSys/install/courses</code>
-                Press the retry-button if you want to return to the installer at the step where it failed.
+                <p>
+                    Failed to copy course files. Please run the following command to fix file permissions:
+                </p>
+                <pre><code>chmod -R 755 /path/to/your/LenaSYS/newinstaller/courses</code></pre>
+                <p>
+                    Make sure to replace <code>/path/to/your/LenaSYS</code> with the actual path where LenaSYS is located.
+                </p>
+                <p><strong>For example (macOS):</strong></p>
+                <pre><code>chmod -R 755 /Applications/XAMPP/xamppfiles/htdocs/LenaSYS/newinstaller/courses</code></pre>
+                <p>
+                    Press the <strong>Retry</strong> button to return to the installer at the step where it failed.
+                </p>
             ',
             [
                 ['text' => 'Retry', 'class' => 'progressButton', 'onclick' => 'Window.retryInstaller()'],
                 ['text' => 'Cancel', 'class' => 'backButton', 'onclick' => 'Window.closeModal()']
             ]
         );
-
         $modal->render();
     }
 

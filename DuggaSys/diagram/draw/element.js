@@ -53,6 +53,9 @@ function drawElement(element, ghosted = false) {
         case elementTypesNames.ERRelation:
             divContent = drawElementERRelation(element, boxw, boxh, linew);
             break;
+        case elementTypesNames.SelfCall:
+            divContent = drawElementSelfCall(element, boxw, boxh, linew);
+            break;
         case elementTypesNames.ERAttr:
             divContent = drawElementERAttr(element, textWidth, boxw, boxh, linew, texth);
             break;
@@ -363,7 +366,20 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
 
     // Conditionally display stereotype above name if one is set
     if (element.stereotype != "" && element.stereotype != null) {
-        headStereotype = drawText(boxw / 2, texth * 0.8 * lineHeight, 'middle', `«${element.stereotype}»`);
+        // Shrinks the stereotype text but only if its long (over 20 chars)
+        //so it fits within the element width without overflowing/cutting off
+        let fullStereotype = `«${element.stereotype}»`;
+        if (fullStereotype.length > 20) {
+            headStereotype = `<text 
+        x="${boxw / 2}" 
+        y="${texth * 0.8 * lineHeight}" 
+        text-anchor="middle"
+        lengthAdjust="spacingAndGlyphs" 
+        textLength="${boxw - 10}"
+    >${fullStereotype}</text>`;
+        } else {
+            headStereotype = drawText(boxw / 2, texth * 0.8 * lineHeight, 'middle', fullStereotype);
+        }
         for (let i = 0; i < headerLines.length; i++) {
             const y = texth * (i + 1.5) * lineHeight;
             headText += drawText(boxw / 2, y, 'middle', headerLines[i]);
@@ -384,7 +400,7 @@ function drawElementUMLEntity(element, boxw, boxh, linew, texth) {
 
     // Content, Attributes
     const textBox = (s, css) => {
-        let height = texth * s.length * lineHeight + texth * 1;
+        let height = (texth * s.length * lineHeight) + boxh / 2 + texth;
         let text = "";
         for (let i = 0; i < s.length; i++) {
             text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
@@ -438,7 +454,7 @@ function drawElementIEEntity(element, boxw, boxh, linew, texth) {
 
     // Content, Attributes
     const textBox = (s, css) => {
-        let height = texth * s.length * lineHeight + texth * 1;
+        let height = (texth * s.length * lineHeight) + boxh + texth;
         let text = "";
         for (let i = 0; i < s.length; i++) {
             if (i < newPrimaryKeys.length) {
@@ -512,7 +528,7 @@ function drawElementSDEntity(element, boxw, boxh, linew, texth) {
 
     // Attributes box with lower rounded corners
     const drawBox = (s, css) => {
-        let height = texth * s.length * lineHeight + texth * 1;
+        let height = (texth * s.length * lineHeight) + boxh + texth;
         let text = "";
         for (let i = 0; i < s.length; i++) {
             text += drawText('0.5em', texth * (i + 1) * lineHeight, 'start', s[i]);
@@ -674,6 +690,28 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
             style='fill:${fill}; stroke:${strokeColor}; stroke-width:${linew};'
         />`;
     return drawSvg(boxw, boxh, poly);
+}
+
+//In progress 
+function drawElementSelfCall(element, boxw, boxh, linew) {
+  const strokeColor = "black";
+  const fillColor   = "none";
+  // Determine square size so it fits with a linew-wide margin
+  const size = Math.min(boxw, boxh) - 2 * linew;
+  // Center it
+  const x = (boxw  - size) / 2;
+  const y = (boxh  - size) / 2;
+
+  const square = `
+    <rect 
+      class="selfcall"
+      x="${x}" y="${y}" 
+      width="${size}" height="${size}" 
+      style="fill:${fillColor}; stroke:${strokeColor}; stroke-width:${linew};" 
+    />
+  `;
+
+  return drawSvg(boxw, boxh, square);
 }
 
 /**

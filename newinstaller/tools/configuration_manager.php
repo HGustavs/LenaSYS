@@ -66,8 +66,12 @@ class ConfigurationManager {
 		try {
 			$real_path = $this->save_file ?: realpath($this->save_file);
 
+			if (!file_exists($real_path)) {
+				$this->create_config();
+			}
+
 			if (!Permissions::has_permission($real_path)) {
-				throw new Exception("Could not read config file at {$real_path} Missing permissions.");
+				Permissions::change_file_permissions($real_path, 0777);
 			}
 	
 			$file_contents = file_get_contents($real_path);
@@ -135,6 +139,50 @@ class ConfigurationManager {
 
 			return $this->handle_success("Successfully wrote config file {$real_path}");
 
+		} catch (Exception $e) {
+			$this->handle_exception(e: $e);
+		}
+	}
+
+	private function create_config() {
+		try {
+			$real_path = $this->save_file ?: realpath($this->save_file);
+			
+			# Docker enviroment
+			$is_docker = getenv("DOCKER") === "1";
+			
+			# XAMPP directory
+			$xampp_path_htdocs = realpath(__DIR__ . "/../../../");
+			$htdocs_owner = Permissions::get_owner($xampp_path_htdocs);
+			$htdocs_group = Permissions::get_group($xampp_path_htdocs);
+
+			# If not in Docker and htdocs is not owned by daemon:daemon
+			if (!$is_docker && ( $htdocs_owner["data"] !== "daemon" || $htdocs_group["data"] !== "daemon" ) ) {
+				$xampp_setup_dir = realpath(__DIR__ . "/../../xampp/setup.sh");
+				$error_message = "Permission denied: the htdocs folder is not owned by 'daemon:daemon.\n'";
+				$error_message .= "Current path: $xampp_path_htdocs\n";
+				$error_message .= "Owner: " . $htdocs_owner["data"] . "\n";
+				$error_message .= "Group: " . $htdocs_group["data"] . "\n";
+				$error_message .= "Have you run the XAMPP setup script located at: $xampp_setup_dir?\n";
+				
+				echo $error_message;
+				exit;
+			}
+
+			$config_file = fopen($real_path, "w+");
+
+			$text = "<?php\n";
+			$text .= "\tdefine(\"DB_USER\", \"lenasys\");\n";
+			$text .= "\tdefine(\"DB_PASSWORD\", \"password\");\n";
+			$text .= "\tdefine(\"DB_HOST\", \"localhost\");\n";
+			$text .= "\tdefine(\"DB_NAME\", \"lenasysdb\");\n";
+			$text .= "\tdefine(\"DB_USING_DOCKER\", \"0\");\n";
+			$text .= "?>";
+			
+			fwrite($config_file, $text);
+			fclose($config_file);
+
+			Permissions::change_file_permissions($real_path, 0777);
 		} catch (Exception $e) {
 			$this->handle_exception(e: $e);
 		}

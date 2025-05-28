@@ -26,7 +26,6 @@ function mdown(event) {
 
     //If anything but an element was clicked, toggle options panel.
     if (event.target.id == "container" && optionsToggled && !userLock) {
-        console.log(event.target.id);
         optionsToggled = false;
         hideOptionsPane();
     }
@@ -92,6 +91,9 @@ function mdown(event) {
         if (event.target.id == "container") {
             switch (mouseMode) {
                 case mouseModes.POINTER:
+
+                    
+
                     sscrollx = scrollx;
                     sscrolly = scrolly;
                     startX = event.clientX;
@@ -102,6 +104,7 @@ function mdown(event) {
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
+                            pointerTool_Start(event.clientX, event.clientY);
                         } else {
                             pointerState = pointerStates.CLICKED_CONTAINER;
                             containerStyle.cursor = "grabbing";
@@ -114,12 +117,18 @@ function mdown(event) {
                         pointerState = pointerStates.CLICKED_CONTAINER;
                         containerStyle.cursor = "grabbing";
 
-                        if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
-                            wasDblClicked = true;
-                            toggleOptionsPane();
+                        // Only react to mouse pointer double click
+                        if (event.pointerType === "mouse") {
+                            if ((new Date().getTime() - dblPreviousTime) < dblClickInterval) {
+                                wasDblClicked = true;
+                                toggleOptionsPane();
+                            }
                         }
-                        break;
+                        
+
                     }
+
+                    break;
                 case mouseModes.BOX_SELECTION:
                     // If pressed down in selection box
                     if (context.length > 0) {
@@ -221,7 +230,7 @@ function ddown(event) {
                 startX = event.clientX;
                 startY = event.clientY;
 
-                if (!altPressed) {
+                if (!altPressed && pointerState !== pointerStates.CLICKED_NODE) {
                     pointerState = pointerStates.CLICKED_ELEMENT;
                     targetElement = event.currentTarget;
                     canPressDeleteBtn = true;

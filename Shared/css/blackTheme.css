@@ -585,13 +585,21 @@ body {
 .logoutBox,
 .formBox,
 .markdown,
+.showsecurityquestion,
 #mrkdwntxt{
   background-color: var(--color-background);
   color: var(--color-text-light);
   border: 2px solid var(--color-border);
 }
 
-.iconColorInDarkMode{
+.markdown-icons,
+#listIcon,
+#imgIcon,
+#headerIcon {
+    filter: brightness(0) invert(1); 
+}
+
+.iconColorInDarkMode {
     cursor: pointer;
     filter: invert(80%);
     -webkit-filter: invert(80%);
@@ -1107,16 +1115,20 @@ input{
 	background-color: #212121;
 }
 
+.alertmsg{
+    background-color: var(--color-border);
+}
+
 #motdArea {
-    background-color: var(--color-accent);
+    background-color: var(--color-border);
 }
 
 #motdArea #motdContent {
-    background-color: var(--color-accent);
+    background-color: var(--color-border);
 }
 
 #motdArea .motdBoxheader {
-    background-color: var(--color-accent);
+    background-color: var(--color-border);
 }
 
 .arrow {
@@ -1359,8 +1371,8 @@ border-left: 14px solid var(--color-sectioned-table-hi);
 }
 
 #motd {
-  background-color: #000!important;
-  color: #fff;
+  background-color: --color-border !important;
+  color: #614875;
 }
 
 #darkmodeToggle {
@@ -1377,6 +1389,10 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     border-style: solid;
     color: #614875;
     font-weight: bold;
+}
+
+.tooltip-searchbar-box {
+  color: var(--color-fill);
 }
 
 #diagramDropDownToggle { 
