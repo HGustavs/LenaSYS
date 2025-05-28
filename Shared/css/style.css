@@ -1589,7 +1589,7 @@ header td {
   & ul {
     display: flex;
     flex-direction: row;
-    margin:0.5em 0 0.5em 0.5em;
+    margin: 0.5em;
     padding: 0;
     list-style: none;
     align-items: center;
@@ -4457,12 +4457,15 @@ span.arrow {
 .course-dropdown {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
+  padding: 3px;
   border: none;
+  width: 120px;
   height: 28px;
   background: transparent;
   background-image: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  vertical-align: text-top;
   color: black;
   outline: none;
 }
@@ -5977,8 +5980,6 @@ rect[class*="activitymarker"]:hover {
 /* Hamburger menu, hidden as default state */
 
 .navheader .hamburger {
-  background: none;
-  border: none;
   pointer-events: none;
   text-align: center;
   display: inline-block;
@@ -6473,8 +6474,8 @@ only screen and (max-device-width: 568px) {
 
   #versionCog, #versionPlus, #editStudent,
   #githubPopupWindow,#testsBTN, #editFiles, #courseIMG,
-  #editCourse, #announcement, #messagedialog, #refreshIMG, .editVers, .newVers, .results, .tests, .files, .access, .refresh, .coursePage{
-    display: none !important; /*TODO: Make editVers..coursePage disappear from the DOM correctly without use of !important.*/
+  #editCourse, #announcement, #messagedialog, #refreshIMG{
+    display: none;
   }
 }
 
@@ -6777,45 +6778,6 @@ only screen and (max-device-width: 568px) {
 
 #noAccessMessage {
   padding: 5px;
-}
-
-@media only screen and (max-width: 460px) {
-  .toast:first-child {
-    margin: 2rem 0 0 0;
-  }
-
-  .toast {
-    width: 80vw;
-    margin: 1rem 0 0 0;
-  }
-
-  #toastContainer {
-    align-items: center;
-    width: 100vw;
-  }
-  
-  .toastText, .typeText {
-    font-size: 10pt;
-  }
-
-  .typeIcon {
-    font-size: 2.5rem;
-  }
-
-  .motdLeftContainer{
-    width:85%;
-  }
-
-  .motdRightContainer{
-    width:15%;
-  }
-
-  .navheader {
-    & ul {
-    margin: 0;
-    gap: 0;
-    }
-  }
 }
 
 /* Is used to style a Select-box in diagram.php. */
@@ -10757,6 +10719,36 @@ margin:2px;
 #removeUser .flex-end {
   display: flex;
   justify-content: flex-end;
+}
+
+@media only screen and (max-width: 460px) {
+  .toast:first-child {
+    margin: 2rem 0 0 0;
+  }
+
+  .toast {
+    width: 80vw;
+    margin: 1rem 0 0 0;
+  }
+
+  #toastContainer {
+    align-items: center;
+    width: 100vw;
+  }
+  
+  .toastText, .typeText {
+    font-size: 10pt;
+  }
+
+  .typeIcon {
+    font-size: 2.5rem;
+  }
+  .motdLeftContainer{
+    width:85%;
+  }
+  .motdRightContainer{
+    width:15%;
+  }
 }
 
 @-webkit-keyframes fadein {
