@@ -6493,19 +6493,8 @@ only screen and (max-device-width: 568px) {
   display: none;
 }
 
-.diagram-hide{
-  height: 50px;
-}
-
-
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
-
-  .navheader{
-    position: relative;
-    overflow: visible;
-    height: 40px;
-  }
 
   .navheader .navBurgerIcon {
     display: block;
@@ -6514,15 +6503,10 @@ only screen and (max-device-width: 568px) {
     width: 29px;
     margin-left: 15px
   } 
-
-  .diagram-hide{
-    height: 0px;
-  }
  
   #navBurgerBox{
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 50px;
     width: 32px;
     padding: 10px;
     height: 120px;
@@ -8110,6 +8094,7 @@ pointer-events: none;
   bottom: 10vh;
   right: 7vw;
   display: none;
+  z-index: 3;
 }
 .diagram-btn-fab{
   line-height: 0;
@@ -10487,18 +10472,6 @@ margin:2px;
 
 .svgbacklayer-background {
   background-color: var(--color-background);
-}
-
-@media screen and (min-height: 1199px) {
-  #rulerOverlay {
-      left:50px;
-  }
-}
-
-@media screen and (min-height: 1200px) {
-  #rulerOverlay {
-      left:70px;
-  }
 }
 
 #rulerOverlay {

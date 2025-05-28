@@ -2109,7 +2109,7 @@ function returnedSection(data) {
         }
 
         // github icon for moments (itemKind 4 is moments)
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 4 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='max-width: 60%;' class="githubPointer" alt='gitgub icon' tabIndex="0" id='dorf' title='Github repo'
@@ -2118,7 +2118,7 @@ function returnedSection(data) {
         }
 
         // github icon for code (itemKind 2 is code)
-        if (itemKind === 2 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 2 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
 
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
@@ -2128,7 +2128,7 @@ function returnedSection(data) {
         }
 
         // Refresh button for moments
-        if (itemKind === 4 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 4 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='moment'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                   id='dorf' class='refreshButton' title='Refresh moment example' src='../Shared/icons/refresh.svg'`;
@@ -2138,7 +2138,7 @@ function returnedSection(data) {
         }
 
         // Refresh button
-        /*if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
+        /*if (itemKind === 1 && (data['writeaccess'] || data['studentteacher'])) {
            str += `<td style='width:32px;'>`;
            str += `<img style='width:16px' alt='refresh icon' tabIndex='0'
                    id='dorf' class='refreshButton' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
@@ -2147,7 +2147,7 @@ function returnedSection(data) {
          }*/
 
         // Testing implementation
-        if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 1 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='width:16px' alt='refresh icon' tabIndex='0' id='dorf' title='Refresh code example' src='../Shared/icons/refresh.svg'`;
@@ -2193,7 +2193,7 @@ function returnedSection(data) {
         }
 
         // Cog Wheel for headers
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
@@ -2209,7 +2209,7 @@ function returnedSection(data) {
         }
 
         // Cog Wheel
-        if (itemKind !== 0 && data['writeaccess'] || data['studentteacher']) { 
+        if (itemKind !== 0 && (data['writeaccess'] || data['studentteacher'])) { 
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
             ["header", "section", "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
 
@@ -2230,7 +2230,7 @@ function returnedSection(data) {
         }
 
         // Trashcan for headers
-        if (itemKind === 0 && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind === 0 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind, ["header", "section",
             "code", "test", "moment", "link", "group", "message"])} ${hideState}'>`;
           str += `<img style='filter: invert(1);' class="traschcanDelItemTab" alt='trashcan icon' tabIndex="0" id='dorf' title='Delete item' class=''
@@ -2239,7 +2239,7 @@ function returnedSection(data) {
         }
         
         // Trashcan for items
-        if (itemKind !== 0  && data['writeaccess'] || data['studentteacher']) {
+        if (itemKind !== 0 && (data['writeaccess'] || data['studentteacher'])) {
 
           // Will run marked items independent of lenght
           console.log('selectedItemList: ' + selectedItemList.length);
@@ -4213,7 +4213,7 @@ function validateDate2(ddate, dialogid) {
 function validateSectName(name) {
   var element = document.getElementById(name);
   var errorMsg = document.getElementById("dialog10");
-  if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_-]+$/)) {
+  if (element.value.match(/^[A-Za-zÅÄÖåäö\s\d():_\-.,]+$/)) {
 
     if (errorMsg) {
       errorMsg.style.transition = "opacity 0.3s ease";

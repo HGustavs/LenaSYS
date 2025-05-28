@@ -1391,6 +1391,10 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     font-weight: bold;
 }
 
+.tooltip-searchbar-box {
+  color: var(--color-fill);
+}
+
 #diagramDropDownToggle { 
     background-color: transparent;
     border: #614875;
