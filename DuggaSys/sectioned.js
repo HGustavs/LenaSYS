@@ -394,25 +394,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Display Dialog
   document.getElementById("editSection").style.display = "flex";
 
-  //------------------------------------------------------------------------------
-  // Checks if feedback is enabled and enables input box for feedbackquestion choice.
-  //------------------------------------------------------------------------------
-  if (kind == 3) {
-    document.getElementById('inputwrapper-Feedback').style.display = "block";
-    if (feedbackenabled == 1) {
-      document.getElementById("fdbck").checked = true;
-      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "block";
-      document.getElementById("fdbckque").value = feedbackquestion;
-    } else {
-      document.getElementById("fdbck").checked = false;
-      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
-    }
-  } else {
-    document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
-    document.getElementById('inputwrapper-Feedback').style.display = "none";
-    document.getElementById("fdbck").checked = false;
-  }
-
 }
 
 // Handles the logic behind the checkbox for absolute deadline

@@ -397,8 +397,6 @@
 						<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
 						<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select class="align_right" id='visib'></select></div>
 						<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select class="align_right" id='grptype'></select></div>
-						<div id='inputwrapper-Feedback' class='inputwrapper'><span>Enable Student Feedback:</span><input type="checkbox"  class="align_center" id='fdbck' title='Student feedback checkbox' onchange='showFeedbackquestion()'></input></div>
-						<div id='inputwrapper-FeedbackQuestion' class='inputwrapper display_none'><span>Student Feedback Question:</span><input type="input"  class='textinput' id='fdbckque' value='How would you grade the dugga?'></input></div>
 					</div>
 
 					<!-- Error message, no duggas present-->
