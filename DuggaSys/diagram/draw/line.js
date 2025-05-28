@@ -242,6 +242,8 @@ function drawLine(line, targetGhost = false) {
         let to = new Point(tx + offset.x2 * zoomfact, ty + offset.y2 * zoomfact);
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
+        let { length, elementLength, startX, startY } = recursiveParam(felem);
+
         startX += offset.x1 * zoomfact;
         startY += offset.y1 * zoomfact;
 
