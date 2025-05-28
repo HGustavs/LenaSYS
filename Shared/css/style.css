@@ -6457,12 +6457,18 @@ only screen and (max-device-width: 568px) {
     width: 250px;
     padding: 10px;
     background-color: var(--color-primary-2);
+    left: 0px;
   }
   #hamburgerBox div {
     width: 250px;
     height: 32px;  
     line-height: 32px;
     margin-bottom: 10px;
+  }
+  #hamburgerIcon {
+    position: absolute;
+    display:block;
+    left: 3px;
   }
  
   #versionCogBurger, #versionPlusBurger, #editStudentBurger,
@@ -6495,23 +6501,27 @@ only screen and (max-device-width: 568px) {
 
 @media only screen and (max-width: 380px),
 only screen and (max-device-width: 568px) {
-
+  .navheader {
+    position: relative; 
+  }
   .navheader .navBurgerIcon {
     display: block;
-    color:white;
-    font-size:24px;
+    color: white;
+    font-size:28px;
     width: 29px;
-    margin-left: 15px
+    margin-left: 0;     
+    float: left;        
   } 
  
   #navBurgerBox{
     position: absolute;
-    top: 50px;
-    width: 32px;
+    top: 100%;            
+    left: 0;             
+    width: 29px;         
     padding: 10px;
-    height: 120px;
+    height: auto;
     background-color: var(--color-primary-2);
-
+    z-index: 999; /*Ensures it lays on top other elements*/   
   }
   
   #motdNav {
@@ -6525,7 +6535,7 @@ only screen and (max-device-width: 568px) {
     display: block;
   }
 
- #home, #back, #theme-toggle, .motd-nav{
+  #home, #back, #theme-toggle, .motd-nav{
     display: none;
   }
 }

@@ -49,8 +49,8 @@ if(isset($_SESSION['uid'])){
 <body>
 
 	<?php
-	$courseed = true;
-	include '../Shared/navheader.php';
+		$courseed = true;
+		include '../Shared/navheader.php';
 	?>
 
 	<!-- content START -->
