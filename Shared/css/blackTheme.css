@@ -585,6 +585,7 @@ body {
 .logoutBox,
 .formBox,
 .markdown,
+.showsecurityquestion,
 #mrkdwntxt{
   background-color: var(--color-background);
   color: var(--color-text-light);
@@ -1388,6 +1389,10 @@ border-left: 14px solid var(--color-sectioned-table-hi);
     border-style: solid;
     color: #614875;
     font-weight: bold;
+}
+
+.tooltip-searchbar-box {
+  color: var(--color-fill);
 }
 
 #diagramDropDownToggle { 

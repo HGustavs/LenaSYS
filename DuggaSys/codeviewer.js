@@ -2904,11 +2904,13 @@ function resetText(boxid)
 {
 	var zoomButton = document.querySelector('#box'+boxid+'wrapper #zoomOut');
 	var zoomInButton = document.querySelector('#box'+boxid+'wrapper #zoomIn');
+	var box = retData['box'][boxid - 1];
+	var fontSize = document.getElementById("fontsize").value = box[6];
 	
 	enableZoomButton(zoomButton);
 	enableZoomButton(zoomInButton);
 	
-	document.getElementById("box" + boxid).style.fontSize = "9px";
+	document.getElementById("box" + boxid).style.fontSize = fontSize;
 
 }
 
@@ -3916,8 +3918,8 @@ function setShowPane(id) {
 		if(!wrapper) continue;
 		if(i == id){
 			wrapper.style.display = "inline";
-			wrapper.style.gridColumn = "a/b";
-			wrapper.style.gridRow = "a/1";
+			wrapper.style.gridColumn = "1/5";
+			wrapper.style.gridRow = "1/7";
 		}
 		else{
 			wrapper.style.display = "none";

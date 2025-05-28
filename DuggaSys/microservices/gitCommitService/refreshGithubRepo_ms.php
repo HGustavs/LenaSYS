@@ -15,7 +15,7 @@ include_once "../../../Shared/basic.php";
 include_once "../../../Shared/sessions.php";
 include_once "../../gitfetchService.php";
 include_once "./refreshCheck_ms.php";
-include_once "./clearGitFiles_ms.php";
+include_once "../../../DuggaSys/microservices/curlService.php";
 
 //Get data from AJAX call in courseed.js and then runs the function getCourseID, refreshGithubRepo or updateGithubRepo depending on the action
 if (isset($_POST['action'])) {
@@ -24,7 +24,7 @@ if (isset($_POST['action'])) {
         // refreshGithubRepo: Updates the metadata from the github repo if there's been a new commit
         //--------------------------------------------------------------------------------------------------
         $cid = $_POST['cid'];
-        clearGitFiles($cid);
+        callMicroservicePOST("gitCommitService/clearGitFiles_ms.php", ['cid' => $cid]);
     }
 
     // Get old commit and URL from Sqlite 
