@@ -10818,9 +10818,17 @@ button:disabled {
 }
 
 .instructions-content{
+  display: block;
   -webkit-columns: 1;
   -moz-columns: 1; 
   columns: 1; 
+  overflow: hidden;
+  transition: 300ms;
+}
+
+.instructions-content:not(.vis){
+  height: auto;
+  transition: 300ms;
 }
 
 #InlPHPDocumentPrev{
