@@ -268,7 +268,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs) {
   // console.log("myConsole lid: " + lid);
   // console.log("myConsole typeof: " + typeof lid);
   document.getElementById("sectionname").focus();
@@ -4518,62 +4518,12 @@ function refreshMoment(momentID) {
 }
 
 //------------------------------------------------------------------------------
-// Displays dialogue box and the content
-//------------------------------------------------------------------------------
-function showUserFeedBack(lid, feedbackquestion) {
-  AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
-  document.getElementById("userFeedbackDialog").style.display = "flex";
-  document.getElementById("feedbacktablecontainer").innerHTML = "";
-  document.getElementById("statscontainer").style.display = "none";
-  document.getElementById("duggaFeedbackQuestion").innerHTML = feedbackquestion;
-}
-
-//------------------------------------------------------------------------------
-// Returns the feedbackdata and displays the feedback and statistics.
-//------------------------------------------------------------------------------
-function returnedUserFeedback(data) {
-  if (data.userfeedback.length == 0) {
-    document.getElementById("feedbacktablecontainer").innerHTML = "<p>No feedback available</p>";
-  } else {
-    document.getElementById("statscontainer").style.display = "flex";
-    var averagerating = parseFloat(data.avgfeedbackscore);
-    var highestscore = 0;
-    var lowestscore = 10;
-    for (var i = 0; i < data.userfeedback.length; i++) {
-      if (parseInt(data.userfeedback[i].score) > highestscore) {
-        highestscore = data.userfeedback[i].score;
-
-      }
-      if (parseInt(data.userfeedback[i].score) < lowestscore) {
-        lowestscore = data.userfeedback[i].score;
-      }
-    }
-    document.getElementById("avg-feedback").innerHTML = averagerating.toFixed(2);
-    document.getElementById("median-feedback").innerHTML = highestscore + " / " + lowestscore;
-    document.getElementById("total-feedback").innerHTML = data.userfeedback.length;
-    document.getElementById("feedbacktablecontainer").innerHTML = createUserFeedbackTable(data);
-  }
-
-}
-
-//------------------------------------------------------------------------------
 // Opens an email to the student
 //------------------------------------------------------------------------------
 function contactStudent(entryname, username) {
 
   window.location = "mailto:" + username +
     "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga " + entryname;
-}
-//------------------------------------------------------------------------------
-// Displays the feedback question input on enable-button toggle.
-//------------------------------------------------------------------------------
-function showFeedbackquestion() {
-  const feedbackQuestionWrapper = document.getElementById("inputwrapper-FeedbackQuestion");
-  if (document.getElementById("fdbck").checked) {
-    feedbackQuestionWrapper.style.display = "block"
-  } else {
-    feedbackQuestionWrapper.style.display = "none"
-  }
 }
 
 //Fetch Code Examples content from github 
