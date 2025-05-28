@@ -685,26 +685,6 @@
 		</div>
 	</div>
 	<!-- HighscoreBox END -->
-
-	<!-- User Feedback Dialog START -->
-    <div id='userFeedbackDialog' class='loginBoxContainer display_none'>
-      <div class='formBox' id='variantBox'>
-        <div class='formBoxHeader'>
-          <h3 id="userFeedbackTitle">User Feedback</h3> 
-          <div class='cursorPointer' onclick='closeWindows();'>x</div>
-        </div>
-		<h2 id="duggaFeedbackQuestion"></h2>
-		<div id="statscontainer">
-			<div class="statsdiv"><p id="avg-feedback"></p>Average value</div>
-			<div class="statsdiv"><p id="median-feedback"></p>Highest/lowest</div>
-			<div class="statsdiv"><p id="total-feedback"></p>Amount of feedbacks</div>
-		</div>
-		<div id="feedbacktablecontainer">
-		</div>
-      </div>
-    </div>
-    <!-- User Feedback Dialog END -->
-
 	
 	<!-- Load Dugga Popup (Enter hash to get redirected to specified dugga) -->
 	<div id='loadDuggaBox' class="loginBoxContainer display_none">
