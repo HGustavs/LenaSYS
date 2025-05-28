@@ -2165,13 +2165,6 @@ function returnedSection(data) {
            str += "</td>";
          }*/
 
-        // Userfeedback
-        if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
-          str += `<td style='width:32px;'>`;
-          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack("${item['lid']}","${item['feedbackquestion']}");'>`;
-          str += `</td>`;
-        }
-
         // Testing implementation
         if (itemKind === 1 && data['writeaccess'] || data['studentteacher']) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
