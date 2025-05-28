@@ -77,6 +77,7 @@
                 flex-flow: column;
                 row-gap: .5rem;
                 z-index: 1;
+                margin-top: 1.5vh;
             }
             .dugga-btn{
                 background-color: var(--color-accent);
@@ -307,6 +308,48 @@
             if(!infoContainer) return; //Null check
             infoContainer.classList.remove("show");
         }
+
+        const iframe = document.getElementById("diagram-iframe");
+        //Waits for the whole iframe to load in
+        iframe.onload = ()=>{
+
+            //Returns the document object by the iframe element
+            //Enables you to access elements that belongs to the iframe
+            /*You can only access and manipulate the document elements in the iframe if the iframe and the parent (this page) are on the same domain and port, and other security reasons*/
+            const iframeDOM = iframe.contentDocument || iframe.contentWindow.document;
+
+            //Instead of using document, you use iframeDOM if you want to access elements from the iframe
+            let sidebarToggleIcon = iframeDOM.querySelector(".icon-wrapper-sidebar");
+            let diagramSidebar = iframeDOM.getElementById("mb-diagram-sidebar");
+            let optionPanel = iframeDOM.getElementById("options-pane");
+            let fabOption = iframeDOM.getElementById("fab-options");
+            let buttonWrapper = document.querySelector(".button-wrapper");
+            let closeBtn = iframeDOM.querySelector(".close-btn");
+            let timer = null;
+
+            //Whenever the icon is clicked it hides and displays the buttons based on if the sidebar is open or not
+            //The same goes for the fab for the option panel
+            sidebarToggleIcon.addEventListener("click", toggleButtonWrapper);
+            fabOption.addEventListener("click", toggleButtonWrapper);
+            closeBtn.addEventListener("click", toggleButtonWrapper);
+
+            //Function that hides and displays the buttons by checking if the sidebar or the option panel is currently active (meaning open)
+            function toggleButtonWrapper(){
+                let sidebarOpen = diagramSidebar.classList.contains("open");
+                let optionPanelOpen = optionPanel.classList.contains("show-options-pane");
+
+                if(sidebarOpen || optionPanelOpen){
+                    buttonWrapper.style.display = 'none';
+                }
+                else{
+                    clearTimeout(timer);
+                    timer = setTimeout(()=>{
+                        buttonWrapper.style.display = 'flex';
+                    }, 150); //Displays it only after a delay to make it more smoothly
+                }
+            }
+        }
+
     </script>
 </body>
 

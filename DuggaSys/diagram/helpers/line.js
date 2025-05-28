@@ -79,15 +79,14 @@ function addLine(fromElement, toElement, kind, isRecursive = false, stateMachine
     return result;
 }
 function checkConnectionErrors(to, from) {
-    if (from.id == to.id &&
-        (to.kind != elementTypesNames.SDEntity && to.kind != elementTypesNames.UMLEntity && to.kind != elementTypesNames.IEEntity && to.kind != "sequenceActivation")
+    if (from.id == to.id && ( to.kind != "sequenceActivation")
     ) {
-        return `Not possible to draw a line between: ${from.name} and ${to.name}, they are the same element`;
+        return `Not possible to draw a line between: ${from.name} and ${to.name}, they are the same element. Use Self Call object instead.`;
     }
     if (sameTypeError(from, to, sameConnectionForbidden)) {
         return `Not possible to draw a line between: ${from.name}- and ${to.name}-element`;
     }
-    if (diffrerentTypeError(from, to)) {
+    if (diffrerentTypeError(from, to) && (from.kind != elementTypesNames.SelfCall && to.kind != elementTypesNames.SelfCall)) {
         return `Not possible to draw lines between: ${from.type}- and ${to.type}-elements`;
     }
     if (limitEREntitiesToAttriutes(from, to)) {

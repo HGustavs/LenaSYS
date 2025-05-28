@@ -81,6 +81,7 @@ const elementTypes = {
     sequenceLoopOrAlt: 14,
     note: 15,
     sequenceObject: 16,
+    SelfCall: 17,
 };
 
 /**
@@ -105,6 +106,7 @@ const elementTypesNames = {
     sequenceLoopOrAlt: "sequenceLoopOrAlt",
     note: "note",
     UMLRelation: "UMLRelation",
+    SelfCall: "SelfCall",
 };
 
 /**
@@ -263,7 +265,8 @@ const SDLineIcons = {//TODO: Replace with actual icons for the dropdown
  * @description Available options of icons to display at the end of lines connecting two SE elements.
  */
 const SELineIcons = {//TODO: Replace with actual icons for the dropdown
-    ARROW: "ARROW"
+    ARROW: "Small_Triangle",
+    Arrow: "Arrow"
 };
 
 /**

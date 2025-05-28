@@ -7,7 +7,6 @@ pdoConnect();
 session_start();
 
 
-global $pdo;
 $requiredKeys = [
 	'cid',
 	'cvs',
