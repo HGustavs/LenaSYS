@@ -19,8 +19,15 @@
         flex-direction: column;
     }
     #mb-diagram-sidebar.open {
-        transform: translateX(-33px);
+        transform: translateX(-1px);
     }
+
+    .sidebar-open .diagram-fab,
+    .sidebar-open .fixed-option-button,
+    .sidebar-open .button-wrapper {
+      display: none !important;
+    }
+    
     #mb-diagram-toolbar.active {
         transform: translateY(0px);
     }
