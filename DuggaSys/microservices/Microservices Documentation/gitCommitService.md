@@ -53,7 +53,7 @@ None
    - Description: Returns null if the git token does not exist or is invalid
 
 ## Examples of Use
--
+`SELECT gitToken FROM gitRepos WHERE cid=:cid`
 
 ### Microservices Used
 None
@@ -68,7 +68,7 @@ Responsible for retrieving the course ID from a database based on a given GitHub
 
 ## Input Parameters
 - Parameter: $githubURL
-   - Type: String
+   - Type: string
    - Description: GitHub URL. Stored as varchar(1024) in the database
 
 ## Calling Methods
@@ -78,7 +78,7 @@ None
 None
 
 ## Examples of Use
--
+`SELECT cid FROM course WHERE courseGitURL = :githubURL;`
 
 ### Microservices Used
 None
@@ -93,7 +93,7 @@ Updates the SQLite database with the latest details about a GitHub repository fo
 
 ## Input Parameters
 - Parameter: $githubURL
-   - Type: String
+   - Type: string
    - Description: GitHub URL. Stored as varchar(1024) in the database
 
 - Parameter: $cid
@@ -117,7 +117,7 @@ Updates the SQLite database with the latest details about a GitHub repository fo
    - Description: Error message if operation fails
 
 ## Examples of Use
--
+`INSERT OR REPLACE INTO gitRepos (cid, repoName, repoURL, lastCommit, gitToken) VALUES (:cid, :repoName, :repoURL, :lastCommit, :gitToken)`
 
 ### Microservices Used
 None
@@ -150,7 +150,7 @@ None
 None
 
 ## Examples of Use
--
+`UPDATE course SET updated = :parsedTime WHERE cid = :cid;`
 
 ### Microservices Used
 None
@@ -182,7 +182,7 @@ None
    - Description: True if a user is a superuser, false if a user is not a superuser. Prints "Too soon since last update, please wait." if the cooldown time has not passed
 
 ## Examples of Use
--
+`if(($currentTime - $_SESSION["updatetGitReposCooldown"][$cid]) < $shortdeadline) { (...) }`
 
 ### Microservices Used
 - newUpdateTime_ms.php

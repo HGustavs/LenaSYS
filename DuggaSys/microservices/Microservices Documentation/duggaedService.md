@@ -4,9 +4,9 @@
 createDuggaVariant_ms.php
 
 ## Description  
-Creates a new variant for a dugga and inserts it into the 'variant'` table in the database.  
+Creates a new variant for a dugga and inserts it into the 'variant' table in the database.  
 Requires the user to be logged in and have either teacher, write, or superuser access to the specified course.  
-Returns updated dugga information by calling 'retrieveDuggaedService_ms.php'.
+Returns updated dugga information by calling retrieveDuggaedService_ms.php.
 
 ## Input Parameters  
 - Parameter: $opt  
@@ -15,46 +15,46 @@ Returns updated dugga information by calling 'retrieveDuggaedService_ms.php'.
 
 - Parameter: $qid  
   - Type: int  
-  - Description: ID of the dugga this variant belongs to
+  - Description: ID of the dugga this variant belongs to. Stored as int(11) in the database
 
 - Parameter: $disabled  
   - Type: int  
-  - Description: Indicates whether the variant is disabled 
+  - Description: Indicates whether the variant is disabled. Stored as tinyint(1) in the database
 
 - Parameter: $parameter  
   - Type: string  
-  - Description: Parameter string that defines the variant configuration
+  - Description: Parameter string that defines the variant configuration. Stored as varchar(8126) in the database
 
 - Parameter: $variantanswer  
   - Type: string  
-  - Description: The correct answer or solution for the variant
+  - Description: The correct answer or solution for the variant. Stored as int(8126) in the database
 
 - Parameter: $cid  
   - Type: int  
-  - Description: Course ID for access control
+  - Description: Course ID for access control. Stored as int(10) in the database
 
-- Parameter: $log__uuid  
+- Parameter: $log_uuid  
   - Type: string  
   - Description: Unique identifier for logging/debugging purposes
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Version of the course used in data retrieval
+  - Type: string
+  - Description: Version of the course used in data retrieval. Stored as varchar(8) in the database
 
 ## Calling Methods  
 - GET
 
 ## Output Data and Format  
-- Output: array  
+- Output: $array  
   - Type: JSON  
   - Description: Contains updated dugga variant data as returned by retrieveDuggaedService_ms.php
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message if something goes wrong during the operation
 
 ## Examples of Use  
-'INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (...);'
+`INSERT INTO variant(quizID, creator, disabled, param, variantanswer) VALUES (...);`
 
 ### Microservices Used  
 - getUid_ms.php  
@@ -78,27 +78,27 @@ Only accessible to users with write, teacher, or superuser permissions for the s
 
 - Parameter: $cid  
   - Type: int  
-  - Description: Course ID the dugga is associated with
+  - Description: Course ID the dugga is associated with. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Version of the course
+  - Type: string  
+  - Description: Version of the course. Stored as varchar(8) in the database
 
 - Parameter: $nme  
   - Type: string  
-  - Description: Name/title of the dugga
+  - Description: Name/title of the dugga. Stored as varchar(255) in the database
 
 - Parameter: $autograde  
   - Type: int  
-  - Description: Whether the dugga should be auto-graded 
+  - Description: Whether the dugga should be auto-graded. Stored as tinyint(1) in the database
 
 - Parameter: $gradesys  
   - Type: int  
-  - Description: Grading system ID used for the dugga
+  - Description: Grading system ID used for the dugga. Stored as tinyint(1) in the database
 
 - Parameter: $template  
   - Type: string  
-  - Description: Template file used for the dugga
+  - Description: Template file used for the dugga. Stored as varchar(255) in the database
 
 - Parameter: $jsondeadline  
   - Type: string  
@@ -106,17 +106,17 @@ Only accessible to users with write, teacher, or superuser permissions for the s
 
 - Parameter: $deadline  
   - Type: string (nullable)  
-  - Description: General deadline for the dugga 
+  - Description: General deadline for the dugga. Stored as datetime in the database 
 
 - Parameter: $qstart  
   - Type: string (nullable)  
-  - Description: Start time/date of the dugga 
+  - Description: Start time/date of the dugga. Stored as datetime in the database
 
 - Parameter: $release  
   - Type: string (nullable)  
-  - Description: Release time/date for the dugga 
+  - Description: Release time/date for the dugga. Stored as datetime in the database
 
-- Parameter: $log__uuid  
+- Parameter: $log_uuid  
   - Type: string  
   - Description: UUID used for logging/debugging purposes
 
@@ -124,16 +124,16 @@ Only accessible to users with write, teacher, or superuser permissions for the s
 - GET
 
 ## Output Data and Format  
-- Output: array  
+- Output: $array  
   - Type: JSON  
   - Description: Contains updated dugga data or error/debug information
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message or debug info 
 
 ## Examples of Use  
-'INSERT INTO quiz(cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, creator, vers, qstart, jsondeadline, 'group') VALUES (...);'
+`INSERT INTO quiz(cid, autograde, gradesystem, qname, quizFile, qrelease, deadline, creator, vers, qstart, jsondeadline, 'group') VALUES (...);`
 
 ### Microservices Used  
 - getUid_ms.php  
@@ -157,34 +157,34 @@ Requires the user to be logged in and have write, teacher, or superuser permissi
 
 - Parameter: $vid  
   - Type: int  
-  - Description: ID of the variant to be deleted
+  - Description: ID of the variant to be deleted. Stored as int(11) in the database
 
 - Parameter: $cid  
   - Type: int  
-  - Description: Course ID used for access control
+  - Description: Course ID used for access control. Stored as int(10) in the database
 
-- Parameter: $log__uuid  
+- Parameter: $log_uuid  
   - Type: string  
   - Description: UUID used for logging/debugging purposes
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Version of the course used in logging and data retrieval
+  - Type: string 
+  - Description: Version of the course used in logging and data retrieval. Stored as varchar(8) in the database
 
 ## Calling Methods  
 - GET
 
 ## Output Data and Format  
-- Output: array  
+- Output: $array  
   - Type: JSON  
   - Description: Contains updated dugga data as returned by retrieveDuggaedService_ms.php
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message if deletion of variant or userAnswer fails
 
 ## Examples of Use  
-'DELETE FROM userAnswer WHERE variant=?; DELETE FROM variant WHERE vid=?;'
+`DELETE FROM userAnswer WHERE variant=?; DELETE FROM variant WHERE vid=?;`
 
 ### Microservices Used  
 - getUid_ms.php  
@@ -208,34 +208,34 @@ The user must be logged in and have either write, teacher, or superuser access t
 
 - Parameter: $qid  
   - Type: int  
-  - Description: ID of the dugga to be deleted
+  - Description: ID of the dugga to be deleted. Stored as int(11) in the database
 
 - Parameter: $cid  
   - Type: int  
-  - Description: Course ID used for access control
+  - Description: Course ID used for access control. Stored as int(10) in the database
 
-- Parameter: $log__uuid  
+- Parameter: $log_uuid  
   - Type: string  
   - Description: UUID used for logging/debugging purposes
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Version of the course used in logging and data retrieval
+  - Type: string  
+  - Description: Version of the course used in logging and data retrieval. Stored as varchar(8) in the database
 
 ## Calling Methods  
 - GET
 
 ## Output Data and Format  
-- Output: array  
+- Output: $array  
   - Type: JSON  
   - Description: Contains updated dugga data as returned by retrieveDuggaedService_ms.php
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message if quiz or user answers could not be deleted
 
 ## Examples of Use  
-'DELETE FROM userAnswer WHERE quiz=?; DELETE FROM quiz WHERE id=?;'
+`DELETE FROM userAnswer WHERE quiz=?; DELETE FROM quiz WHERE id=?;`
 
 ### Microservices Used  
 - getUid_ms.php  
@@ -260,83 +260,81 @@ Returns structured data including quiz details, variant configurations, course i
 
 - Parameter: $qid  
   - Type: int  
-  - Description: ID of a specific quiz 
+  - Description: ID of a specific quiz. Stored as int(11) in the database
 
 - Parameter: $vid  
   - Type: int  
-  - Description: ID of a specific variant 
+  - Description: ID of a specific variant. Stored as int(11) in the database
 
 - Parameter: $parameter  
   - Type: string  
-  - Description: Variant parameter string 
+  - Description: Variant parameter string. Stored as varchar(8126) in the database
 
 - Parameter: $variantanswer  
   - Type: string  
-  - Description: Variant answer
+  - Description: Variant answer. Stored as varchar(8126) in the database
 
 - Parameter: $disabled  
   - Type: int  
-  - Description: Disabled status of variant
+  - Description: Disabled status of variant. Stored as tinyint(1) in the database
 
 - Parameter: $nme  
   - Type: string  
-  - Description: Name of the quiz
+  - Description: Name of the quiz. Stored as varchar(255) in the database
 
 - Parameter: $cid  
   - Type: int  
-  - Description: Course ID for selecting duggas and verifying access
+  - Description: Course ID for selecting duggas and verifying access. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Course version for filtering quiz entries
+  - Type: string
+  - Description: Course version for filtering quiz entries. Stored as varchar(8) in the database
 
-- Parameter: $log__uuid  
+- Parameter: $log_uuid  
   - Type: string  
   - Description: UUID used for service event logging
 
 - Parameter: $userid  
   - Type: int  
-  - Description: ID of the user requesting data 
+  - Description: ID of the user requesting data. Stored as int(10) in the database
 
 ## Calling Methods  
-- Internally called via function from other microservices  
-- No direct HTTP endpoint
+None
 
 ## Output Data and Format  
-- Output: entries  
-  - Type: array (JSON)  
+- Output: $entries  
+  - Type: JSON-array 
   - Description: List of duggas and their variants for the course
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Debug information about errors during data retrieval
 
-- Output: writeaccess  
+- Output: $writeaccess  
   - Type: boolean  
   - Description: Indicates whether the user has permission to modify the content
 
-- Output: files  
+- Output: $files  
   - Type: array  
   - Description: List of available dugga template filenames
 
-- Output: duggaPages  
+- Output: $duggaPages  
   - Type: array  
   - Description: Map of dugga template names to their file contents
 
-- Output: coursecode  
-  - Type: string  
-  - Description: Course code of the selected course
+- Output: $coursecode  
+  - Type: int
+  - Description: Course code of the selected course. Stored as int(10) in the database
 
-- Output: coursename  
+- Output: $coursename  
   - Type: string  
-  - Description: Course name of the selected course
+  - Description: Course name of the selected course. Stored as varchar(80) in the database
 
 ## Examples of Use  
-'SELECT * FROM quiz WHERE cid=? AND vers=?;'
+`SELECT * FROM quiz WHERE cid=? AND vers=?;`
 
 ### Microservices Used  
-- basic.php  
-- sessions.php  
+None
 
 ---
 
@@ -353,52 +351,50 @@ Updates an existing variant in the 'variant' table by modifying its parameter, a
 
 - Parameter: $vid  
   - Type: int  
-  - Description: ID of the variant to update
+  - Description: ID of the variant to update. Stored as int(10) in the database
 
 - Parameter: $parameter  
   - Type: string  
-  - Description: New parameter string for the variant
+  - Description: New parameter string for the variant. Stored as varchar(8126) in the database
 
 - Parameter: $variantanswer  
   - Type: string  
-  - Description: New answer string for the variant
+  - Description: New answer string for the variant. Stored as varchar(8126) in the database
 
 - Parameter: $disabled  
   - Type: int  
-  - Description: Disabled status of the variant
+  - Description: Disabled status of the variant. Stored as tinyint(1) in the database
 
-- Parameter: $log__uuid  
+- Parameter: $log_uuid  
   - Type: string  
   - Description: UUID used for logging/debugging purposes
 
 - Parameter: $cid  
   - Type: int  
-  - Description: Course ID used in data retrieval and access control
+  - Description: Course ID used in data retrieval and access control. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Course version used in data retrieval
+  - Type: string
+  - Description: Course version used in data retrieval. Stored as varchar(8) in the database
 
 ## Calling Methods  
 - GET
 
 ## Output Data and Format  
-- Output: array  
+- Output: $array  
   - Type: JSON  
   - Description: Contains updated dugga data as returned by retrieveDuggaedService_ms.php
 
-- Output: debug  
+- Output: $debug  
   - Type: string  
   - Description: Error message if the variant update fails
 
 ## Examples of Use  
-'UPDATE variant SET disabled=?, param=?, variantanswer=? WHERE vid=?;'
+`UPDATE variant SET disabled=?, param=?, variantanswer=? WHERE vid=?;`
 
 ### Microservices Used  
 - getUid_ms.php  
-- retrieveDuggaedService_ms.php  
-- sessions.php  
-- basic.php  
+- retrieveDuggaedService_ms.php   
 
 ---
 
@@ -415,55 +411,55 @@ Updates an existing dugga in the 'quiz' table by modifying its metadata includin
 
 - Parameter: $qid  
   - Type: int  
-  - Description: ID of the dugga to update
+  - Description: ID of the dugga to update. Stored as int(11) in the database
 
 - Parameter: $uid  
   - Type: int  
-  - Description: ID of the user performing the update 
+  - Description: ID of the user performing the update. Stored as int(10) in the database
 
 - Parameter: $nme  
   - Type: string  
-  - Description: Updated name/title of the dugga
+  - Description: Updated name/title of the dugga. Stored as varchar(255) in the database
 
 - Parameter: $autograde  
   - Type: int  
-  - Description: Whether the dugga should be auto-graded
+  - Description: Whether the dugga should be auto-graded. Stored as tinyint(1) in the database
 
 - Parameter: $gradesys  
   - Type: int  
-  - Description: Grading system ID to apply
+  - Description: Grading system ID to apply. Stored as tinyint(1) in the database
 
 - Parameter: $template  
   - Type: string  
-  - Description: Updated template filename or type
+  - Description: Updated template filename or type. Stored as varchar(255) in the database
 
 - Parameter: $qstart  
   - Type: string (nullable)  
-  - Description: Start date/time for the dugga
+  - Description: Start date/time for the dugga. Stored as datetime in the database
 
 - Parameter: $deadline  
   - Type: string (nullable)  
-  - Description: Deadline for the dugga
+  - Description: Deadline for the dugga. Stored as datetime in the database
 
 - Parameter: $release  
   - Type: string (nullable)  
-  - Description: Release date/time
+  - Description: Release date/time. Stored as datetime in the database
 
 - Parameter: $jsondeadline  
   - Type: string  
-  - Description: JSON string containing additional per-student or per-group deadlines
+  - Description: JSON string containing additional per-student or per-group deadlines. Stored as varchar(2048) in the database
 
-- Parameter: $log__uuid  
+- Parameter: $log_uuid  
   - Type: string  
   - Description: UUID used for logging/debugging purposes
 
 - Parameter: $cid  
   - Type: int  
-  - Description: Course ID used in data retrieval and access control
+  - Description: Course ID used in data retrieval and access control. Stored as int(10) in the database
 
 - Parameter: $coursevers  
-  - Type: int  
-  - Description: Course version used in data retrieval
+  - Type: string
+  - Description: Course version used in data retrieval. Stored as varchar(8) in the database
 
 ## Calling Methods  
 - GET
@@ -478,10 +474,8 @@ Updates an existing dugga in the 'quiz' table by modifying its metadata includin
   - Description: Error message if dugga update fails
 
 ## Examples of Use  
-'UPDATE quiz SET qname=?, autograde=?, gradesystem=?, quizFile=?, qstart=?, deadline=?, qrelease=?, jsondeadline=?, 'group'=? WHERE id=?;'
+`UPDATE quiz SET qname=?, autograde=?, gradesystem=?, quizFile=?, qstart=?, deadline=?, qrelease=?, jsondeadline=?, 'group'=? WHERE id=?;`
 
 ### Microservices Used  
 - getUid_ms.php  
-- retrieveDuggaedService_ms.php  
-- sessions.php  
-- basic.php  
+- retrieveDuggaedService_ms.php 

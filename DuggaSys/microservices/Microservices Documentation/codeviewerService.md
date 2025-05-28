@@ -2,24 +2,24 @@
 deleteCodeExample_ms.php
 
 ## Description
-Deletes a code example and its related data from the database if the user has the appropriate permissions, and then retrieves all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
+Deletes a code example and its related data from the 'improw', 'box', 'impwordlist', 'codeexample' and 'listentries' tables if the user has the appropriate permissions- Then it retrieves all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
 
 ## Input Parameters
 - Parameter: $exampleId
-   - Type: string
-   - Description: Example ID. Stored as mediumint in the database
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $courseId
-   - Type: string
-   - Description: Course ID associated with the code example. Stored as int in the database
+   - Type: int
+   - Description: Course ID associated with the code example. Stored as int(10) in the database
 
 - Parameter: $courseVersion
    - Type: string
-   - Description: Course version. Stored as int in the database
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $boxId
-   - Type: string
-   - Description: Box ID. Stored as int in the database
+   - Type: int
+   - Description: Box ID. Stored as int(10) in the database
 
 - Parameter: $opt
    - Type: string
@@ -27,26 +27,26 @@ Deletes a code example and its related data from the database if the user has th
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID. Stored as int in the database
+   - Description: User ID. Stored as int(10) in the database
 
 - Parameter: $lid
-   - Type: string
-   - Description: List entry ID. Stored as int in the database                  
+   - Type: int
+   - Description: List entry ID. Stored as int(10) in the database                  
 
 ## Calling Methods
 - POST
 
 ## Output Data and Format
-- Output: debug
+- Output: $debug
    - Type: string
    - Description: Error messages if any operation fails
 
 - Output: $data
    - Type: JSON
-   - Description: contains data related to the deleted code example
+   - Description: Contains data related to the deleted code example
 
 ## Examples of Use
-'DELETE FROM codeexample WHERE exampleid=:exampleid;'
+`DELETE FROM codeexample WHERE exampleid=:exampleid;`
 
 ### Microservices Used
 - getUid_ms.php
@@ -58,28 +58,28 @@ Deletes a code example and its related data from the database if the user has th
 editBoxTitle_ms.php
 
 ## Description
-Updates a box title of a code example when a user with appropriate permissions edits it, and then retrieves all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
+Updates a box title of a code example in the 'box' table when a user with appropriate permissions edits it, and then retrieves all updated data from the database (through retrieveCodeviewerService_ms.php) as the output for the microservice.
 
 ## Input Parameters
 - Parameter: $exampleId
-   - Type: string
-   - Description: Example ID. Stored as mediumint in the database
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $boxId
-   - Type: string
-   - Description: Box ID. Stored as int in the database
+   - Type: int
+   - Description: Box ID. Stored as int(10) in the database
 
 - Parameter: $opt
    - Type: string
    - Description: Operation type
 
 - Parameter: $courseId
-   - Type: string
-   - Description: Course ID associated with the code example. Stored as int in the database
+   - Type: int
+   - Description: Course ID associated with the code example. Stored as int(10) in the database
 
 - Parameter: $courseVersion
    - Type: string
-   - Description: Course version. Stored as int in the database
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $boxTitle
    - Type: string
@@ -87,7 +87,7 @@ Updates a box title of a code example when a user with appropriate permissions e
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID. Stored as int in the database
+   - Description: User ID. Stored as int(10) in the database
 
 ## Calling Methods
 - POST
@@ -98,7 +98,7 @@ Updates a box title of a code example when a user with appropriate permissions e
    - Description: contains data of the code example related to the updated box title
 
 ## Examples of Use
-‘UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;’
+`UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;`
 
 ### Microservices Used
 - getUid_ms.php
@@ -118,16 +118,16 @@ Handles updates of code examples, and then retrieving all updated data from the 
    - Description: Operation type
 
 - Parameter: $exampleId
-   - Type: string
-   - Description: Example ID. Stored as mediumint in the database
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $courseId
-   - Type: string
-   - Description: Course ID associated with the code example. Stored as int in the database
+   - Type: int
+   - Description: Course ID associated with the code example. Stored as int(10) in the database
 
 - Parameter: $courseVersion
    - Type: string
-   - Description: Course version associated with the code example. Stored as int in the database
+   - Description: Course version associated with the code example. Stored as varchar(8) in the database
 
 - Parameter: $playlink
    - Type: string
@@ -142,16 +142,16 @@ Handles updates of code examples, and then retrieving all updated data from the 
    - Description: Name of the section of the code example. Stored as varchar(64) in the database
 
 - Parameter: $beforeId
-   - Type: string
-   - Description: Before ID. Stored as int in the database
+   - Type: int
+   - Description: Before ID. Stored as int(11) in the database
 
 - Parameter: $afterId
-   - Type: string
-   - Description: After ID. Stored as int in the database
+   - Type: int
+   - Description: After ID. Stored as int(11) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID. Stored as int in the database                        
+   - Description: User ID. Stored as int(10) in the database                        
 
 ## Calling Methods
 - POST
@@ -182,20 +182,20 @@ Updates the content of a box associated with a certain code example, and then re
    - Description: Operation type
 
 - Parameter: $courseId
-   - Type: string
-   - Description: Course ID associated with the code example. Stored as int in the database
+   - Type: int
+   - Description: Course ID associated with the code example. Stored as int(10) in the database
 
 - Parameter: $courseVersion
    - Type: string
-   - Description: Course version associated with the code example. Stored as int in the database
+   - Description: Course version associated with the code example. Stored as varchar(8) in the database
 
 - Parameter: $exampleId
-   - Type: string
-   - Description: Example ID. Stored as mediumint in the database
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $boxId
-   - Type: string
-   - Description: Box ID. Stored as int in the database
+   - Type: int
+   - Description: Box ID. Stored as int(10) in the database
 
 - Parameter: $boxTitle
    - Type: string
@@ -207,27 +207,27 @@ Updates the content of a box associated with a certain code example, and then re
 
 - Parameter: $wordlist
    - Type: string
-   - Description: Word list. Stored as mediumint in the database
+   - Description: Word list. Stored as mediumint(8) in the database
 
 - Parameter: $filename
    - Type: string
    - Description: Name of the file related to the code example. Stored as varchar(256) in the database
 
 - Parameter: $fontsize
-   - Type: string
-   - Description: Font size of the code example. Stored as int in the database
+   - Type: int
+   - Description: Font size of the code example. Stored as int(11) in the database
 
 - Parameter: $addedRows
-   - Type: string
-   - Description: The rows added to the content of code example. Stored in several fields in the improw table in the database
+   - Type: int
+   - Description: The rows added to the content of code example. Stored as int(11) in the database
 
 - Parameter: $removedRows
    - Type: string
-   - Description: The rows removed from the content of code example. Stored in several fields in the improw table in the database
+   - Description: The rows removed from the content of code example. Stored as int(11) in the database
 
 - Parameter: $userid
    - Type: int
-   - Description: User ID. Stored as int in the database                                 
+   - Description: User ID. Stored as int(10) in the database                                 
 
 ## Calling Methods
 - POST
@@ -250,24 +250,24 @@ UPDATE box SET boxtitle=:boxtitle, boxcontent=:boxcontent, filename=:filename, f
 retrieveCodeviewerService_ms.php
 
 ## Description
-Retrieves updated data from the database and stores it in an array. The file outputs information about a specific code example in a course, including details, related examples, important lines, words, file directories, and user access levels. It makes sure only authorized users can view and change this information. It also logs the service event.
+Retrieves updated data from the 'codeexample' table and stores it in an array. The file outputs information about a specific code example in a course, including details, related examples, important lines, words, file directories, and user access levels. It makes sure only authorized users can view and change this information. It also logs the service event.
 
 ## Input Parameters
 - Parameter: $userid
    - Type: int
-   - Description: User ID. Stored as int in the database
+   - Description: User ID. Stored as int(10) in the database
 
 - Parameter: $exampleId
-   - Type: string
-   - Description: Example ID. Stored as mediumint in the database
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $courseId
-   - Type: string
-   - Description: Course ID associated with the code example. Stored as int in the database
+   - Type: int
+   - Description: Course ID associated with the code example. Stored as int(10) in the database
 
 - Parameter: $courseVersion
    - Type: string
-   - Description: Course version. Stored as int in the database
+   - Description: Course version. Stored as varchar(8) in the database
 
 - Parameter: $opt
    - Type: string
@@ -314,27 +314,27 @@ Used when you create a new code example for a course and choose a template to di
 ## Input Parameters
 - Parameter: $userid
    - Type: int
-   - Description: User ID. Stored as int in the database
+   - Description: User ID. Stored as int(10) in the database
 
 - Parameter: $opt
    - Type: string
    - Description: Operation type
 
 - Parameter: $templateNumber
-   - Type: string
-   - Description: Template ID. Stored as int in the database
+   - Type: int
+   - Description: Template ID. Stored as int(10) in the database
 
 - Parameter: $exampleId
-   - Type: string
-   - Description: Example ID. Stored as mediumint in the database
+   - Type: int
+   - Description: Example ID. Stored as mediumint(8) in the database
 
 - Parameter: $courseId
    - Type: int
-   - Description: Course ID associated with the code example. Stored as int in the database
+   - Description: Course ID associated with the code example. Stored as int(10) in the database
 
 - Parameter: $courseVersion
    - Type: string
-   - Description: Course version. Stored as int in the database            
+   - Description: Course version. Stored as varchar(8) in the database            
 
 ## Calling Methods
 - function call
