@@ -268,7 +268,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs, feedbackenabled, feedbackquestion) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype, deadline, relativeDeadline, tabs) {
   // console.log("myConsole lid: " + lid);
   // console.log("myConsole typeof: " + typeof lid);
   document.getElementById("sectionname").focus();
@@ -393,25 +393,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
   // Display Dialog
   document.getElementById("editSection").style.display = "flex";
-
-  //------------------------------------------------------------------------------
-  // Checks if feedback is enabled and enables input box for feedbackquestion choice.
-  //------------------------------------------------------------------------------
-  if (kind == 3) {
-    document.getElementById('inputwrapper-Feedback').style.display = "block";
-    if (feedbackenabled == 1) {
-      document.getElementById("fdbck").checked = true;
-      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "block";
-      document.getElementById("fdbckque").value = feedbackquestion;
-    } else {
-      document.getElementById("fdbck").checked = false;
-      document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
-    }
-  } else {
-    document.getElementById("inputwrapper-FeedbackQuestion").style.display = "none";
-    document.getElementById('inputwrapper-Feedback').style.display = "none";
-    document.getElementById("fdbck").checked = false;
-  }
 
 }
 
@@ -1152,14 +1133,6 @@ function prepareItem() {
   // If absolute deadline is not checked, always use relative deadline
   if (!document.getElementById('absolutedeadlinecheck').checked) {
     param.deadline = convertDateToDeadline(calculateRelativeDeadline(param.relativedeadline));
-  }
-
-  if (document.getElementById('fdbck').checked) {
-    param.feedback = 1;
-    param.feedbackquestion = document.getElementById("fdbckque").value;
-  } else {
-    param.feedback = 0;
-    param.feedbackquestion = null;
   }
 
   // Places new items at appropriate places by measuring the space between FABStatic2 and the top of the scrren (Old solution)
@@ -2165,13 +2138,6 @@ function returnedSection(data) {
            str += "</td>";
          }*/
 
-        // Userfeedback
-        if (data['writeaccess'] && itemKind === 3 && item['feedbackenabled'] == 1) {
-          str += `<td style='width:32px;'>`;
-          str += `<img id='dorf' src='../Shared/icons/FistV.svg' title='Feedback' onclick='showUserFeedBack("${item['lid']}","${item['feedbackquestion']}");'>`;
-          str += `</td>`;
-        }
-
         // Testing implementation
         if (itemKind === 1 && (data['writeaccess'] || data['studentteacher'])) {
           str += `<td style='width:32px;' class='${makeTextArray(itemKind,
@@ -2228,7 +2194,7 @@ function returnedSection(data) {
           str += " onclick='setActiveLid(" + item['lid'] + ");selectItem(" + makeparams([item['lid'], item['entryname'],
           item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
           item['highscoremode'], item['comments'], item['grptype'], item['deadline'], item['relativedeadline'],
-          item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+          item['tabs']]) + "), clearHideItemList();' />";
 
 
           str += "</td>";
@@ -2245,12 +2211,12 @@ function returnedSection(data) {
             str +=makeparams([item['lid'], item['entryname'],
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['handindeadline'],item['relativedeadline'],
-            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+            item['tabs']]) + "), clearHideItemList();' />";
           } else {
             str +=makeparams([item['lid'], item['entryname'],
             item['kind'], item['visible'], item['link'], momentexists, item['gradesys'],
             item['highscoremode'], item['comments'], item['grptype'], item['deadline'],item['relativedeadline'],
-            item['tabs'], item['feedbackenabled'], item['feedbackquestion']]) + "), clearHideItemList();' />";
+            item['tabs']]) + "), clearHideItemList();' />";
           }
           str += "</td>";
         }
@@ -3145,7 +3111,6 @@ window.addEventListener("DOMContentLoaded", function () {
   displayListAndGrid();
   displayAnnouncementBoxOverlay();
   multiSelect();
-  // toggleFeedbacks();
 });
 
 
@@ -3607,107 +3572,6 @@ function multiSelect() {
     this.focus();
   });
   sel.addEventListener("mousemove", e => e.preventDefault());
-}
-
-// Start of recent feedback from the teacher
-function toggleFeedbacks() {
-  var uname = document.getElementById("userName").innerHTML;
-  var studentid;
-  var feedbackComment = "feedbackComment";
-
-  if (document.getElementById("feedback")) {
-    document.querySelector("header").insertAdjacentHTML("afterend",
-      "<div id='feedbackOverlay'><div class='feedbackContainer'>" +
-      "<div class='feedbackHeader'><span><h2>Recent Feedback</h2></span></div>" +
-      "<div class='feedbackContent'></div></div></div>");
-  }
-
-  fetch("../Shared/retrieveUserid.php?uname=" + encodeURIComponent(uname))
-    .then(function (response) { return response.json(); })
-    .then(function (parsed_uid) {
-      studentid = parsed_uid.uid;
-
-      fetch("../Shared/retrieveFeedbacks.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "studentid=" + encodeURIComponent(studentid)
-      })
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-          document.querySelector(".feedbackContent").innerHTML = data.duggaFeedback;
-
-          if (document.querySelectorAll(".recentFeedbacks").length === 0) {
-            document.querySelector(".feedbackContent").insertAdjacentHTML("beforeend",
-              "<p class='noFeedbacks'><span>There are no recent feedback to view.</span>" +
-              "<span class='viewOldFeedbacks' onclick='viewOldFeedbacks();'>View old feedback</span></p>");
-
-            document.querySelector(".feedbackHeader").insertAdjacentHTML("beforeend",
-              "<span onclick='viewOldFeedbacks(); hideIconButton();' id='iconButton'>" +
-              "<img src='../Shared/icons/oldFeedback.svg' title='Old feedbacks'></span>");
-          }
-
-          var oldFeedbacks = document.querySelectorAll(".oldFeedbacks");
-          for (var i = 0; i < oldFeedbacks.length; i++) oldFeedbacks[i].style.display = "none";
-
-          readLessOrMore(feedbackComment);
-
-          if (data.unreadFeedbackNotification > 0) {
-            var feedbackIcon = document.querySelector("#feedback img");
-            if (feedbackIcon) {
-              var badge = document.createElement("span");
-              badge.id = "feedbacknotificationcounter";
-              badge.innerHTML = data.unreadFeedbackNotification;
-              feedbackIcon.after(badge);
-            }
-          }
-
-          var feedbackBtn = document.getElementById("feedback");
-          if (feedbackBtn) {
-            feedbackBtn.addEventListener("click", function () {
-              var overlay = document.getElementById("feedbackOverlay");
-              if (overlay) {
-                if (overlay.style.display === "none" || overlay.style.display === "") overlay.style.display = "block";
-                else overlay.style.display = "none";
-              }
-
-              if (document.getElementById("feedbacknotificationcounter")) {
-                fetch("../Shared/retrieveFeedbacks.php", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                  body: "studentid=" + encodeURIComponent(studentid) + "&viewed=YES"
-                })
-                .then(function () {
-                  var badge = document.getElementById("feedbacknotificationcounter");
-                  if (badge) badge.remove();
-                });
-              }
-            });
-          }
-        })
-        .catch(function () { console.log("Couldn't return feedback data"); });
-    });
-}
-
-function viewOldFeedbacks() {
-  document.querySelector(".feedbackHeader h2").textContent = "Old Feedback";
-  document.querySelectorAll(".noFeedbacks").forEach(el => el.remove());
-
-  const content = document.querySelector(".feedbackContent");
-  content.insertAdjacentHTML("beforeend", '<div id="loadMore"><span>Load More</span></div>');
-
-  const cards = Array.from(document.querySelectorAll(".feedback_card"));
-  const load  = document.getElementById("loadMore");
-
-  const showBatch = () => cards.forEach((c, i) => (c.style.display = i < 5 ? "" : "none"));
-  showBatch();
-  if (cards.length <= 5) load.style.display = "none";
-
-  load.addEventListener("click", e => {
-    e.preventDefault();
-    cards.filter(c => c.style.display === "none").slice(0, 5).forEach(c => (c.style.display = ""));
-    if (cards.every(c => c.style.display !== "none")) load.style.display = "none";
-    load.scrollIntoView({ behavior: "smooth" });
-  });
 }
 
 function hideIconButton() {
@@ -4645,97 +4509,12 @@ function refreshMoment(momentID) {
 }
 
 //------------------------------------------------------------------------------
-// Displays dialogue box and the content
-//------------------------------------------------------------------------------
-function showUserFeedBack(lid, feedbackquestion) {
-  AJAXService("GETUF", { courseid: querystring['courseid'], moment: lid }, "USERFB");
-  document.getElementById("userFeedbackDialog").style.display = "flex";
-  document.getElementById("feedbacktablecontainer").innerHTML = "";
-  document.getElementById("statscontainer").style.display = "none";
-  document.getElementById("duggaFeedbackQuestion").innerHTML = feedbackquestion;
-}
-
-//------------------------------------------------------------------------------
-// Returns the feedbackdata and displays the feedback and statistics.
-//------------------------------------------------------------------------------
-function returnedUserFeedback(data) {
-  if (data.userfeedback.length == 0) {
-    document.getElementById("feedbacktablecontainer").innerHTML = "<p>No feedback available</p>";
-  } else {
-    document.getElementById("statscontainer").style.display = "flex";
-    var averagerating = parseFloat(data.avgfeedbackscore);
-    var highestscore = 0;
-    var lowestscore = 10;
-    for (var i = 0; i < data.userfeedback.length; i++) {
-      if (parseInt(data.userfeedback[i].score) > highestscore) {
-        highestscore = data.userfeedback[i].score;
-
-      }
-      if (parseInt(data.userfeedback[i].score) < lowestscore) {
-        lowestscore = data.userfeedback[i].score;
-      }
-    }
-    document.getElementById("avg-feedback").innerHTML = averagerating.toFixed(2);
-    document.getElementById("median-feedback").innerHTML = highestscore + " / " + lowestscore;
-    document.getElementById("total-feedback").innerHTML = data.userfeedback.length;
-    document.getElementById("feedbacktablecontainer").innerHTML = createUserFeedbackTable(data);
-  }
-
-}
-//------------------------------------------------------------------------------
-// Creates a table with the Feedback data.
-//------------------------------------------------------------------------------
-function createUserFeedbackTable(data) {
-  var str = "<table id='feedbacktable'  style='border-collapse: collapse' class='list'>";
-  str += "<thead><tr><th>Feedback ID</th>";
-  str += "<th>Username</th>";
-  str += "<th>Course ID</th>";
-  str += "<th>Dugga ID</th>";
-  str += "<th>Rating</th>";
-  str += "<th>Contact student</th></tr></thead><tbody style='background-color: var(--color-background)'>";
-
-  for (var i = 0; i < data.userfeedback.length; i++) {
-    str += "<tr>";
-    str += "<td>" + data.userfeedback[i].ufid + "</td>";
-    if (data.userfeedback[i].username === null) {
-      str += "<td>Anonymous</td>";
-    } else {
-      str += "<td>" + data.userfeedback[i].username + "</td>";
-    }
-    str += "<td>" + data.userfeedback[i].cid + "</td>";
-    str += "<td>" + data.userfeedback[i].lid + "</td>";
-    str += "<td style='font-weight: bold; font-size: 18px;'>" + data.userfeedback[i].score + "</td>";
-    if (data.userfeedback[i].username === null) {
-      str += "<td style='width:1px;'><input class='inactive-button' type='button' value='Contact student'></td>";
-    } else {
-      str += `<td style='width:1px;'><input class='submit-button' type='button' value='Contact student'
-      onclick='contactStudent(\"${data.userfeedback[i].entryname}\",\"${data.userfeedback[i].username}\")'></td>`;
-    }
-    str += "</tr>";
-  }
-
-  str += "</tbody></table>";
-  return str;
-}
-
-//------------------------------------------------------------------------------
 // Opens an email to the student
 //------------------------------------------------------------------------------
 function contactStudent(entryname, username) {
 
   window.location = "mailto:" + username +
-    "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga " + entryname;
-}
-//------------------------------------------------------------------------------
-// Displays the feedback question input on enable-button toggle.
-//------------------------------------------------------------------------------
-function showFeedbackquestion() {
-  const feedbackQuestionWrapper = document.getElementById("inputwrapper-FeedbackQuestion");
-  if (document.getElementById("fdbck").checked) {
-    feedbackQuestionWrapper.style.display = "block"
-  } else {
-    feedbackQuestionWrapper.style.display = "none"
-  }
+    "@student.his.se?Subject=Kontakt%20angående%20din%20feedback%20på%20dugga " + entryname; // Is this related to the feedback functions? Should be removed or altered if it is.
 }
 
 //Fetch Code Examples content from github 
