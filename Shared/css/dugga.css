@@ -213,6 +213,11 @@ strong {font-weight: bold;}
 	padding:15px;
 	border:1px solid #ccc;
 }
+.instructions-content:not(.vis) {
+	padding-left: 15;
+	padding-top:0;
+	padding-bottom: 0;
+}
 .feedback-content{
 	padding:1px;
 	border:1px solid #ccc;	

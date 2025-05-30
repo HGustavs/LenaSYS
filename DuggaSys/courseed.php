@@ -73,7 +73,7 @@ if(isset($_SESSION['uid'])){
 	<div id="servermsgcontainer" class="alertmsg display_none">
 			<h3 id="servermsgtitle">Message of the day</h3>
 			<p id="servermsg"></p>
-			<input type='button' id="MOTDbutton" value='Close' class='submit-button' onclick='hideServerMessage()'/>
+			<input type='button' id="MOTDbutton" value='Close' class='submit-button' onclick='hideServerMessage(); removeMotdMargin();'/>
 	</div>
 	<!-- Server Msg END -->
 

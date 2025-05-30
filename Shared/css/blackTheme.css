@@ -1024,6 +1024,31 @@ input{
     background-color:#242729;
 }
 /* END */
+
+/* Style for Bit Dugga Popover */
+#pop {
+    background: var(--color-background) !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  #pop table {
+    background: var(--color-background) !important;
+    background-image: none !important;
+  }
+
+  #pop td {
+    background-image: none !important;
+  }
+
+  #pop {
+    border: 2px solid white !important;
+    border-radius: 6px !important;
+    padding: 6px !important;
+  }
+/* END */
+
 /* Style for submission-receipt in "Diagram_Dugga" START*/
 #submission-receipt{
     background-color: var(--color-sectioned-table-hi);

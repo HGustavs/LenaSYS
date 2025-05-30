@@ -26,6 +26,7 @@ function mdown(event) {
 
     //If anything but an element was clicked, toggle options panel.
     if (event.target.id == "container" && optionsToggled && !userLock) {
+        console.log(event.target.id);
         optionsToggled = false;
         hideOptionsPane();
     }

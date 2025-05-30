@@ -66,14 +66,14 @@ function setup() {
 
 //displays dropdown when hovering search bar
 function hoverSearch() {
-	document.querySelector('#dropdownSearch').style.display = 'block';
-	document.querySelector('#dropdowns').style.display = 'none';
-	document.querySelector('#dropdownc').style.display = 'none';
+	document.getElementById('dropdownSearch').style.display = 'block';
+	document.getElementById('dropdowns').style.display = 'none';
+	document.getElementById('dropdownc').style.display = 'none';
 }
 
 //stops displaying the dropdown when removing cursor from search bar
 function leaveSearch() {
-	document.querySelector('#dropdownSearch').style.display = 'none';
+	document.getElementById('dropdownSearch').style.display = 'none';
 	
 }
 
@@ -93,7 +93,7 @@ function leaveFilter() {
 		buttonPressed = false;
 			document.getElementById("dropdownc").style.display="none";
 	}
-	document.querySelector('#dropdownSearch').style.display = 'none';
+	document.getElementById('dropdownSearch').style.display = 'none';
 }
 
 function hoverc() {

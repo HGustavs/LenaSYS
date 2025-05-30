@@ -1399,31 +1399,6 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedQuiz
 		});
-	} else if(kind=="DUGGAFEEDBACK") {
-		$.ajax({
-			url: "showDuggaservice.php",
-			type:"POST",
-			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
-			dataType: "json",
-			success: returnedFeed
-		});
-	} else if(kind=="SENDDUGGAFEEDBACK") {
-		$.ajax({
-			url: "showDuggaservice.php",
-			type:"POST",
-			data:"courseid="+querystring['cid']+"&moment="+querystring['moment']+"&opt="+opt+para,
-			dataType: "json",
-			success: returnedSubmitFeedback
-		});
-	} else if(kind=="USERFB") {
-		$.ajax({
-			url: "../DuggaSys/microservices/sectionedService/readUserDuggaFeedback_ms.php",
-			type:"POST",
-			data:"courseid="+querystring['cid']+"&opt="+opt+para,
-			dataType: "json",
-			success: returnedUserFeedback
-		});
-		
 	} else if(kind=="GROUPTOKEN") {
 		$.ajax({
 			url: "showDuggaservice.php",
@@ -1962,14 +1937,6 @@ function hideReceiptPopup()
 	//document.getElementById("#overlay").style.display="none";
 }
 
-function hideFeedbackPopup(){
-	document.getElementById("feedbackBox").style.display="none";
-}
-
-function showFeedbackPopup(){
-	document.getElementById("feedbackBox").style.display="block";
-}
-
 function hideDuggaStatsPopup()
 {
 	document.getElementById("duggaStats").style.display="none";
@@ -2446,23 +2413,9 @@ function toggleInstructions(element)
 	}
 }
 
-function toggleFeedback(element)
-{
-	if(element!=undefined){
-		if(element.parentElement.querySelector(".feedback-content").style.display=="none")
-			element.parentElement.querySelector(".feedback-content").style.display="block";
-		else
-			element.parentElement.querySelector(".feedback-content").style.display="none";
-	}
-}
-
 function disableSave(){
 	document.getElementById("saveDuggaButton").disabled = true;
 }
-
-//----------------------------------------------------------------------------------
-// show/hide submission and feedback
-//----------------------------------------------------------------------------------
 
 function displayPreview(filepath, filename, fileseq, filetype, fileext, fileindex, displaystate)
 {
@@ -2691,7 +2644,7 @@ function hideCookieMessage() {
 
 function showServerMessage(){
 	document.querySelector("#motdNav").style.display="none";
-	document.querySelector("#servermsgcontainer").style.display="inline-block";
+	document.querySelector("#servermsgcontainer").style.display="flex";
 	sessionStorage.setItem('show','true');
 }
 
@@ -2700,48 +2653,6 @@ function showServerMessage(){
 //
 // Functions for animating and hiding MOTD and cookie messages
 //----------------------------------------------------------------------------------
-
-
-//----------------------------------------------------------------------------------
-//sends Course and Dugga ID to see whether feedback should be enabled in receiptbox
-//----------------------------------------------------------------------------------
-function duggaFeedbackCheck(){
-	var citstr=querystring['moment'];
-	citstr=querystring['cid']+" "+citstr;
-	AJAXService("CHECKFDBCK",{answer:citstr},"DUGGAFEEDBACK");
-}
-
-function returnedFeed(data) {
-	if (data['userfeedback']== 1 ){
-		document.getElementById("#feedbackbox").style.display="block";
-		document.getElementById("#feedbackquestion").innerHTML=data['feedbackquestion'];
-	} 
-}
-//----------------------------------------------------------------------------------
-//sends userinput feedback
-//----------------------------------------------------------------------------------
-function sendFeedback(entryname){
-	if (document.querySelector("input[name='rating']:checked").value) {
-		document.getElementById('#submitstatus').style.display="none";
-		var param = {};
-  		param.courseid = querystring['courseid'];
-  		param.moment = querystring['moment'];
-		param.score = document.querySelector("input[name='rating']:checked").value;
-		param.entryname = entryname;  
-		if(document.getElementById("#contactable:checked").value){
-			param.contactable = 1;
-		}else{
-			param.contactable = 0;
-		}
-		AJAXService("SENDFDBCK",param,"SENDDUGGAFEEDBACK");
-	}else {
-		document.getElementById('#submitstatus').style.display({'color':'var(--color-red)',"display": "inline-block"}).textarea("Select a rating before saving it.");
-	}
-}
-
-function returnedSubmitFeedback(){
-	document.getElementById('#submitstatus').style.display({'color':'var(--color-green)',"display": "inline-block"}).textarea("Feedback saved");
-}
 
 function setDuggaTitle(title) {
 	duggaTitle = title;

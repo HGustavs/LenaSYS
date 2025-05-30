@@ -39,6 +39,10 @@ function closeDeleteForm() {
 	document.getElementById("myForm").style.display = "none";
 }
 
+function removeMotdMargin() {
+	document.getElementById("Courselistc").style.margin = "0px auto";
+}
+
 function deleteCourse() {
 
 	let cid = document.getElementById("cid").value;
@@ -568,6 +572,8 @@ function updateSettings() {
 	if (window.bool9 === true) {
 		toast("success", 'Version updated', 5);
 		popupContainer.style.display = "none";
+		// Reset MOTD visibility state when updating
+		sessionStorage.setItem('show', 'true');
 		AJAXService("SETTINGS", { motd: messageElement.value, readonly: readonly }, "COURSE");
 	} else {
 		toast("error", "You have entered incorrect information", 7);
