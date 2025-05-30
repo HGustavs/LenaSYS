@@ -696,7 +696,9 @@ function drawElementUMLRelation(element, boxw, boxh, linew) {
 function drawElementSelfCall(element, boxw, boxh, linew) {
   const strokeColor = "black";
   const fillColor   = "none";
+
     console.log("hello from draw");
+
   // Determine square size so it fits with a linew-wide margin
   const size = Math.min(boxw, boxh) - 2 * linew;
   // Center it
