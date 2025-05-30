@@ -39,6 +39,10 @@ function closeDeleteForm() {
 	document.getElementById("myForm").style.display = "none";
 }
 
+function removeMotdMargin() {
+	document.getElementById("Courselistc").style.margin = "0px auto";
+}
+
 function deleteCourse() {
 
 	let cid = document.getElementById("cid").value;
