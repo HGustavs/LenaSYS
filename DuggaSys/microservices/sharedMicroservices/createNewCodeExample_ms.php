@@ -13,12 +13,7 @@ $userid = getUid();
 // Microservice call to retrieve username
 $data = callMicroserviceGET("sharedMicroservices/retrieveUsername_ms.php");
 
-$response = callMicroservicePOST($url, [], true);
-
-$data = json_decode($response, true);
 $username = $data['username'] ?? 'unknown';
-
-logUserEvent($userid, $username, EventTypes::SectionItems, $sectname);
 
 $requiredKeys = [
 	'exampleid',

@@ -260,7 +260,7 @@ CREATE TABLE template(
 	templateid				INTEGER UNSIGNED NOT NULL,
 	stylesheet 				VARCHAR(39) NOT NULL,
 	numbox					INTEGER NOT NULL,
-	PRIMARY KEY(templateid, stylesheet)
+	PRIMARY KEY(templateid)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
 
 
