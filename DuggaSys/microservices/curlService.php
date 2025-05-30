@@ -58,7 +58,7 @@ function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue
 
 
 //----------------------------------------------------------------------------------
-// recieveMicroservicePOST - Receives a POST request from a microservice.
+// recieveMicroservicePOST - Recieves a POST request from a microservice.
 //
 // How to call the function:
 // 1. Add 'include_once "../curlService.php";' to access this file
