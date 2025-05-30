@@ -359,12 +359,47 @@ function resetBitstring() {
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
-function toggleInstructions()
-{
-    $(".instructions-content").slideToggle("slow");
-}
+document.addEventListener("DOMContentLoaded", function(){
+	const instructionBox = document.querySelector(".instructions-content");
 
-function toggleFeedback()
-{
-    $(".feedback-content").slideToggle("slow");
+	instructionBox.classList.add("vis");
+
+	instructionBox.style.height="auto";
+
+	let height = instructionBox.clientHeight + "px";
+
+	instructionBox.style.height="0px";
+	
+	setTimeout(function(){
+		instructionBox.style.height=height
+	}, 0);
+}, {once: true});
+
+function toggleInstructions()
+{	
+	const instructionBox = document.querySelector(".instructions-content");
+
+	if(instructionBox.classList.contains("vis")){
+		instructionBox.style.height="0px";
+
+		instructionBox.addEventListener("transitionrun", function(){
+			instructionBox.classList.remove("vis");
+		}, {
+			once: true
+		});
+	}
+	else{
+		instructionBox.classList.add("vis");
+
+		instructionBox.style.height="auto";
+
+		let height = instructionBox.clientHeight + "px";
+
+		instructionBox.style.height="0px";
+
+		setTimeout(function(){
+			instructionBox.style.height=height
+		}, 0);
+	}
+	init = false;
 }
