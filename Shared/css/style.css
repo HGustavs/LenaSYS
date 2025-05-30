@@ -3925,6 +3925,7 @@ div.submit-button:disabled {
   padding: 5px;
   right: 100%;
   width: 200px;
+  left: 170px;
 }
 
 .formDialogText::after {
