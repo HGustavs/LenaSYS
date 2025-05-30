@@ -103,23 +103,23 @@
 					<div class="inner-wrapper">
 						<div class="input-grid">
 							<?php
-								$ConfigurationManager = new ConfigurationManager("../../coursesyspw.php");
-								$parameters = $ConfigurationManager->read_parameters();
+							$ConfigurationManager = new ConfigurationManager("../../coursesyspw.php");
+							$parameters = $ConfigurationManager->read_parameters();
 
-								inputField("db_name", "Database name:", "text", $parameters["DB_NAME"]);
-								inputField("username", "MySQL user:", "text", $parameters["DB_USER"]);
-								inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"', $parameters["DB_HOST"]);
-								inputField("password", "MySQL user password:", "password", $parameters["DB_PASSWORD"]);
-								
-								if (!empty($parameters["DB_USING_DOCKER"])) {
-									checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment", $parameters["DB_USING_DOCKER"]);
-								} else {
-									checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
-								}
+							inputField("db_name", "Database name:", "text", $parameters["DB_NAME"]);
+							inputField("username", "MySQL user:", "text", $parameters["DB_USER"]);
+							inputFieldWithTip('hostname', 'Hostname:', 'Tip: Usually set to "localhost"', $parameters["DB_HOST"]);
+							inputField("password", "MySQL user password:", "password", $parameters["DB_PASSWORD"]);
 
-								checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
-								checkboxWithWarning("overwrite_db", "Overwrite existing database", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
-								checkbox("overwrite_user", "Overwrite existing user");
+							if (!empty($parameters["DB_USING_DOCKER"])) {
+								checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment", $parameters["DB_USING_DOCKER"]);
+							} else {
+								checkbox("distributed_environment", "Use Distributed Environment", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#use-distributed-environment");
+							}
+
+							checkbox("Verbose", "Verbose", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#verbose");
+							checkboxWithWarning("overwrite_db", "Overwrite existing database", "WARNING! Overwriting databases and users cannot be undone!", "https://github.com/HGustavs/LenaSYS/blob/8be873ef4ccb3cdb2fc28e72b2a30a79aa52c2f9/Shared/Documentation/newinstaller/documentation.md#overwrite-existing-database-and-user-names");
+							checkbox("overwrite_user", "Overwrite existing user");
 							?>
 						</div>
 					</div>
@@ -221,15 +221,20 @@
 				<div class="content">
 					<?php
 					header2("SSL (HTTPS)");
-					bodyText("To allow for push notifications, you have to enable SSL on your webserver");
+					bodyText("Some features requires HTTPS");
 					?>
 					<div class="inner-wrapper">
 						<div class="input-flex">
 							<?php
-							checkbox("generate_SSL", "Generate local SSL certificate");
+							checkbox("generate_SSL", "generate local SSL certificate");
 							?>
 						</div>
 					</div>
+						<?php
+					
+					bodyText("To enable SSL on your system, follow this link:", "https://github.com/HGustavs/LenaSYS/Shared/Documentation/newinstaller/documentation.md#step-6");
+
+					?>
 				</div>
 				<?php
 				navigationButtons(5, 7);
