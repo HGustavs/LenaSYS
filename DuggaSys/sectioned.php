@@ -357,7 +357,7 @@
 						<span>Name:</span>
 						<div class="dialogwrapper">
 							<div class="formDialog">
-								<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9.</span>
+								<span id="dialog10" class="formDialogText">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, "." , ",", "-"</span>
 							</div>
 							<input onkeyup="quickValidateForm('editSection', 'saveBtn');" onchange="validateSectName('sectionname')" placeholder='Enter section name' type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64" />
 						</div>
