@@ -56,6 +56,27 @@ function callMicroservicePOST(string $path, array $dataToSend, bool $returnValue
     return $returnValue ? $response : null;
 }
 
+
+//----------------------------------------------------------------------------------
+// recieveMicroservicePOST - Recieves a POST request from a microservice.
+//
+// How to call the function:
+// 1. Add 'include_once "../curlService.php";' to access this file
+// 2. Create an array. Example:
+/*
+    $requiredKeys = [
+	'value1',
+    'value2'
+];
+*/
+// 3. Call the function: $receivedData = recieveMicroservicePOST($requiredKeys);
+// 4. Handle the recieved values
+/*
+$value1 = $receivedData['value1'];
+$value2 = $receivedData['value2'];
+*/
+//----------------------------------------------------------------------------------
+
 function recieveMicroservicePOST(array $requiredKeys = []) {
 
     $receivedData = [];
