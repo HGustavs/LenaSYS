@@ -243,7 +243,7 @@ function drawLine(line, targetGhost = false) {
         let from = new Point(fx + offset.x1 * zoomfact, fy + offset.y1 * zoomfact);
 
         let { length, elementLength, startX, startY } = recursiveParam(felem);
-
+        
         startX += offset.x1 * zoomfact;
         startY += offset.y1 * zoomfact;
 
@@ -666,8 +666,8 @@ function selfCall(fx, fy, tx, ty, offsetX1, offsetY1,  line, lineColor, strokeDa
     const targetX = tx;
     const targetY = ty;
     const lineWidth = 30 * zoomfact;   
-    console.log(" tx: "  + tx  + " ty: " + ty  + " fx: " + fx + " fy: " + fy)
-
+    console.log(" tx: " + tx + " ty: " + ty + " fx: " + fx + " fy: " + fy);
+    
     const bendX = targetX + lineWidth //Making the line curv and bend back
     const bendY = targetY + lineWidth //different bend dependant on Left/Right or Top/Bottom
     const endX = startX  + lineWidth 
