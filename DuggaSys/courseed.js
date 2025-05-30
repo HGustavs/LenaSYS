@@ -572,6 +572,8 @@ function updateSettings() {
 	if (window.bool9 === true) {
 		toast("success", 'Version updated', 5);
 		popupContainer.style.display = "none";
+		// Reset MOTD visibility state when updating
+		sessionStorage.setItem('show', 'true');
 		AJAXService("SETTINGS", { motd: messageElement.value, readonly: readonly }, "COURSE");
 	} else {
 		toast("error", "You have entered incorrect information", 7);

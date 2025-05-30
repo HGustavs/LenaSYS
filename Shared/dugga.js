@@ -2644,7 +2644,7 @@ function hideCookieMessage() {
 
 function showServerMessage(){
 	document.querySelector("#motdNav").style.display="none";
-	document.querySelector("#servermsgcontainer").style.display="inline-block";
+	document.querySelector("#servermsgcontainer").style.display="flex";
 	sessionStorage.setItem('show','true');
 }
 
