@@ -39,6 +39,10 @@ class SSEReceiver {
 	 */
 	handleError() {
 		console.log("Failed to connect to server or connection closed.");
+		let downloadbutton=document.getElementById("downloadButton");
+		downloadbutton.classList.remove('disabledDownloadButton');
+		downloadbutton.classList.add('downloadButton');
+		downloadbutton.href="instalationLogLenaSYS.txt"
 		this.source.close();
 	}
 }

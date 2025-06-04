@@ -19,6 +19,11 @@ class InstallEngine
 		SSESender::start();
 		$settings = json_decode($installation_data);
 		$verbose = $settings->verbose === 'true' ? true : false;
+		$myfile = fopen("instalationLogLenaSYS.txt", "w") or die("Unable to open file!");
+
+				fwrite($myfile, "");
+				
+				fclose($myfile);
 
 		if ($verbose) {
 			SSESender::transmit("Received settings: " . $installation_data);
@@ -68,6 +73,11 @@ class InstallEngine
 				$completion = $completion > 99 ? 99 : $completion;
 				SSESender::transmit_event("updateProgress", data: $completion);
 				$i++;
+				$myfile = fopen("instalationLogLenaSYS.txt", "a") or die("Unable to open file!");
+
+				fwrite($myfile, "Next operation ".$operationKey."\n");
+				
+				fclose($myfile);
 
 				if ($start_flag) {	// Allow installer to start on the n:th step 
 					if ($settings->starting_step == $operationKey) {

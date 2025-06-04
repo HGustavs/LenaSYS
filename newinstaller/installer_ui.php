@@ -294,6 +294,9 @@
 							<button class="defaultButton pageButton" id="openModal" type="button" style="display: none;">View Problem</button>
 						</div>
 					</div>
+					<a id="downloadButton" class="disabledDownloadButton" href="javascript:void(0)" download>
+						Download installation log
+					</a>
 				</div>
 			</div>
 		</div>
