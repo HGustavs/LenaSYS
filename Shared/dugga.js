@@ -1925,11 +1925,13 @@ function showLoadDuggaPopup()
 {
 	document.querySelector("#loadDuggaBox").style.display="flex";
 	localStorage.setItem("ls-redirect-last-url", document.URL);
+	lockScroll(true);
 }
 
 function hideLoadDuggaPopup()
 {
 	document.querySelector("#loadDuggaBox").style.display="none";
+	lockScroll(false);
 }
 
 function updateReceiptText(title, URL, hash, hashPW)
