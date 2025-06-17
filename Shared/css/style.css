@@ -2748,6 +2748,12 @@ Float
   border:1px solid red; 
 }
 
+body.popup-open {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+}
+
 /*---===#===---*
 Generic functions END 
 *---====#===---*/

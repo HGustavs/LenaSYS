@@ -46,6 +46,21 @@ if(localStorage.getItem(localStorageItemKey)){
 	variantValue = JSON.parse(localStorage.getItem(localStorageItemKey)).variant.vid;
 }
 
+//locks the scroll, for popups
+function lockScroll(lock) {
+  if (lock) {
+    const y = window.scrollY;
+    document.body.dataset.scrollY = y;
+    document.body.style.top = `-${y}px`;
+    document.body.classList.add('popup-open');
+  } else {
+    const y = +(document.body.dataset.scrollY || 0);
+    document.body.classList.remove('popup-open');
+    document.body.style.top = '';
+    window.scrollTo(0, y);
+  }
+}
+
 /*navburger*/
 function navBurgerChange(operation = 'click') {
   var x = document.getElementById("navBurgerBox");
@@ -612,6 +627,7 @@ function closeWindows(){
 			//toggleloginnewpass();
 			document.querySelector("#overlay").style.display="none";
 			resetFields();
+			lockScroll(false);
 		}
 	}
 
@@ -1909,11 +1925,13 @@ function showLoadDuggaPopup()
 {
 	document.querySelector("#loadDuggaBox").style.display="flex";
 	localStorage.setItem("ls-redirect-last-url", document.URL);
+	lockScroll(true);
 }
 
 function hideLoadDuggaPopup()
 {
 	document.querySelector("#loadDuggaBox").style.display="none";
+	lockScroll(false);
 }
 
 function updateReceiptText(title, URL, hash, hashPW)
