@@ -394,6 +394,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Display Dialog
   document.getElementById("editSection").style.display = "flex";
 
+  lockScroll(true);
+
 }
 
 // Handles the logic behind the checkbox for absolute deadline
