@@ -379,6 +379,7 @@ function createVersion() {
 
 function selectCourse(cid, coursename, coursecode, visi, vers, edvers, gitHubUrl) {
 	console.log("selectCourse() => Selecting course to edit - gitHubUrl:", gitHubUrl || "NO INPUT");
+	lockScroll(true);
 	let items = document.querySelectorAll(".item");
 	items.forEach(item => {
 		item.style.border = "none";
@@ -539,6 +540,8 @@ function editSettings() {
 	const messageElement = document.getElementById("motd");
 	const readOnlyCheckbox = document.getElementById("readonly");
 	const popupContainer = document.getElementById("editSettings");
+
+	lockScroll(true);
 
 	var tempMotd = motd;
 	tempMotd = motd.replace(/&Aring;/g, "Å").replace(/&aring;/g, "å").replace(/&Auml;/g, "Ä").replace(/&auml;/g, "ä").replace(/&Ouml;/g, "Ö").replace(/&ouml;/g, "ö").replace(/&amp;/g, "&").replace(/&#63;/g, "?");
