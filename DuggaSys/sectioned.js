@@ -781,13 +781,15 @@ function confirmBox(operation, item = null)
 	}
 	else if (operation == "openGitHubTemplate") {
 		console.log("testworkornah?");
+    lockScroll(true);
 		document.getElementById("gitHubTemplate").style.display = "flex";
 		gitTemplatePopupOutsideClickHandler();
 		fetchCodeExampleHiddenLinkParam(item);
 	}
 	else if (operation == "closeConfirmBox") {
 		var ids = ["gitHubBox", "gitHubTemplate", "sectionConfirmBox", "tabConfirmBox", "sectionHideConfirmBox", "noMaterialConfirmBox", "sectionShowConfirmBox"];
-		for (var i = 0; i < ids.length; i++) {
+		lockScroll(false);
+    for (var i = 0; i < ids.length; i++) {
 			document.getElementById(ids[i]).style.display = "none";
 		}
 		purgeInputFieldsGitTemplate();
