@@ -24,6 +24,11 @@ function mwheel(event) {
 function mdown(event) {
     mouseButtonDown = true;
 
+    context.forEach(el => {
+       el.offsetX = event.clientX - el.x;
+       el.offsetY = event.clientY - el.y;
+   })
+
     //If anything but an element was clicked, toggle options panel.
     if (event.target.id == "container" && optionsToggled && !userLock) {
         console.log(event.target.id);
@@ -101,7 +106,7 @@ function mdown(event) {
                     startY = event.clientY;
 
                     // If pressed down in selection box
-                    if (context.length > 0) {
+                    if (context.length > 0) { 
                         if (startX > selectionBoxLowX && startX < selectionBoxHighX && startY > selectionBoxLowY && startY < selectionBoxHighY) {
                             pointerState = pointerStates.CLICKED_ELEMENT;
                             targetElement = context[0];
