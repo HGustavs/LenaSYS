@@ -1172,10 +1172,10 @@ function mmoving(event) {
                         const lLine = data.find(line => line.id === snapId);
                         el.x = lLine.x + (lLine.width / 2) - (el.width / 2); // Snap horizontally to lifeline cenetr 
                     } else {
-                        el.x = coords.x - (el.width / 2); //  Follow mouse normally (centered)
+                        el.x = coords.x - el.offsetX;
+                        el.y = coords.y - el.offsetY;  
                     }
 
-                    el.y = coords.y - (el.height / 2); // Update vertical position to center under mouse
                 });
 
                 //Flag as moving and update the diagram
