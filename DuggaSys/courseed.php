@@ -207,4 +207,49 @@ if(isset($_SESSION['uid'])){
 
 
 </body>
+
+<script>
+// Add hamburger menu close functionality
+function closeHamburgerMenu() {
+    const hamburgerBox = document.getElementById('hamburgerBox');
+    const navBurgerBox = document.getElementById('navBurgerBox');
+    
+    if (hamburgerBox) {
+        hamburgerBox.style.display = 'none';
+    }
+    if (navBurgerBox) {
+        navBurgerBox.style.display = 'none';
+    }
+}
+
+// Add event listener when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const hamburgerBox = document.getElementById('hamburgerBox');
+        const navBurgerBox = document.getElementById('navBurgerBox');
+        const hamburgerIcon = document.getElementById('hamburgerIcon');
+        const navBurgerIcon = document.querySelector('.navBurgerIcon');
+        
+        // Check if click is outside the dropdown and hamburger icon
+        const isClickInsideDropdown = (hamburgerBox && hamburgerBox.contains(event.target)) ||
+                                    (navBurgerBox && navBurgerBox.contains(event.target));
+        
+        const isClickOnHamburgerIcon = (hamburgerIcon && hamburgerIcon.contains(event.target)) ||
+                                     (navBurgerIcon && navBurgerIcon.contains(event.target));
+        
+        // If click is outside dropdown and not on hamburger icon, close the menu
+        if (!isClickInsideDropdown && !isClickOnHamburgerIcon) {
+            closeHamburgerMenu();
+        }
+    });
+    
+    // Close dropdown when scrolling (optional - for better UX)
+    window.addEventListener('scroll', function() {
+        closeHamburgerMenu();
+    });
+    
+});
+</script>
 </html>
