@@ -137,6 +137,19 @@ strong {font-weight: bold;}
 	border-radius:8px;
 }
 
+@media screen and (max-width: 768px) {
+	.popover {
+		position: absolute !important;
+		left: 50% !important;
+		top: 86% !important;
+		width: calc(100vw - 20px) !important;
+		max-width: 350px !important;
+		transform: translateX(-50%) !important;
+		z-index: 9999 !important;
+		margin: 0 !important;
+	}
+}
+
 .popover, .popover:before {
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
