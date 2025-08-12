@@ -10915,5 +10915,54 @@ button:disabled {
 .feedback-content.slide-visible {
   max-height: 500px; /* Justera efter behov */
 }
+@media only screen and (max-width: 768px) {
+  
+  /* Fix för submitButtonTable containern */
+  #submitButtonTable.submitButtonTable-center {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    padding: 8px !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 5px !important;
+    margin-top: 10px !important;
+    margin-left: 0 !important; /* Flytta till vänster */
+    margin-right: auto !important;
+    width: auto !important; /* Låt bredden anpassa sig */
+    align-self: flex-start !important; /* Justera till vänster */
+  }
+  
+  /* Fix för alla knappar i submitButtonTable */
+  #submitButtonTable input[type="button"] {
+    width: 200px !important; /* Fast bredd istället för 100% */
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+    display: block !important;
+  }
+  
+  /* Specifika fixes för varje knapp */
+  input[value="Save"] {
+    order: 1 !important;
+  }
+  
+  input[value="Reset"] {
+    order: 2 !important;
+  }
+  
+  input[value="Load Dugga"] {
+    order: 3 !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  #submitButtonTable.submitButtonTable-center {
+    width: 45% !important; 
+    margin: 45px !important; 
+  }
+}
 
 /* END */
