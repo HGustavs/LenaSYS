@@ -5116,6 +5116,66 @@ div.reset-pw:hover{
   border-bottom-right-radius: 10px;
 }
 
+@media screen and (max-width: 932px) {
+  
+  #container {
+    display: block !important;
+    flex-direction: initial !important;
+    justify-content: initial !important;
+    width: 100% !important;
+    padding: 10px !important;
+  }
+  
+  #foo {
+    width: 100% !important;
+    display: block !important;
+    margin-bottom: 20px !important;
+    order: 1 !important;
+  }
+  
+  #foo canvas {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 auto !important;
+  }
+  
+  #infoBox {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    flex-direction: initial !important;
+    margin: 20px 0 !important;
+    padding: 15px !important;
+    box-sizing: border-box !important;
+    background: white !important;
+    border: 2px solid #614875 !important;
+    border-radius: 8px !important;
+    order: 2 !important;
+  }
+  
+  #quizInstructions {
+    width: 100% !important;
+    display: block !important;
+  }
+  
+  .pane-container {
+    width: 100% !important;
+    display: block !important;
+    position: static !important;
+  }
+  
+  .pane-header,
+  .pane-body {
+    width: 100% !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+}
+
 .fab {
   position: fixed;
   width: 50px;
