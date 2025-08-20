@@ -231,6 +231,9 @@ Testing Link:
 				include '../Shared/navheader.php';
 				echo "<div class='err'><span id='bummerMsg'>Bummer!</span> Course or Code Example does not seem to exist! <a href='./codeviewer.php?exampleid=1&courseid=1&cvers=2013'>Click here</a> to redirect to example 1.</div>";
 			}
+			if(isset($codeviewer)){
+				echo "<div id='mobileNavHeading'><span id='mobileExampleSection'></span><span id='mobileExampleName'></span></div>";
+			}
 			//This text is always shown at the beginning of the page load but is removed if all checks succeeds and all is well. It also serves as error message is all checks weren't successful
 			if($codeviewer) echo "<div id='div2'>If this text remains this means there is an uncaught error. Please contact the administrators</div>";
 			echo "</div>";
