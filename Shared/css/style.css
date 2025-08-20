@@ -1864,7 +1864,6 @@ div .navButt:hover {
         height: 25px;
         text-align: center;
         color: var(--color-text-header);
-        margin-top: 50px;
         background:#927b9e;
         padding: 4px;
         font-weight: bold;
