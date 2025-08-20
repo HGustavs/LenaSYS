@@ -4202,6 +4202,9 @@ div.submit-button:disabled {
   /* Makes the icons purple */
   filter: var(--purple-icon-filter);
 }
+.whiteIcon{
+  filter: var(--purple-icon-filter);
+}
 
 #Sectionlist .moment #dorf {
   filter: invert(1);
