@@ -5,15 +5,15 @@ if (session_status() === PHP_SESSION_NONE) {
 // This microservice is used to retrieve a username from a specific userid (uid) 
 
 include_once "./getUid_ms.php";
-include_once "../../../Shared/basic.php"; // Ger tillgång till $pdo och checklogin()
+include_once "../../../Shared/basic.php"; // Provides access to $pdo and checklogin()
 
-pdoConnect(); // ← För initialize $pdo
+pdoConnect(); // ← For initialize $pdo
 
-header('Content-Type: application/json'); // Viktigt för JSON-standard
+header('Content-Type: application/json'); // Important for JSON standard
 
 date_default_timezone_set("Europe/Stockholm");
 
-$userid = getUid();  // Hämtar inloggad användares UID (från session eller token)
+$userid = getUid();  // Retrieves logged in user's UID (from session or token)
 
 $username = "unknown";
 
@@ -28,4 +28,4 @@ if (checklogin() === true) {
     }
 }
 
-echo json_encode(['username' => $username]);  // Skickar tillbaka som JSON
+echo json_encode(['username' => $username]);  // Sends back as JSON
