@@ -1835,7 +1835,15 @@ div .navButt:hover {
 
 #codeBurger {
   display: table-cell;
+  padding: 8px; /* Required for full click coverage, pls dont remove */
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
 }
+#codeBurger img {
+  display: block; /* makes sure the burger image doesn't have extra space */
+}
+
 #burgerMenu {
   position: absolute;
   z-index: 9999;
