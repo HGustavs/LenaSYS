@@ -581,9 +581,7 @@
 
 			echo "</ul></div>";
 
-			if(isset($codeviewer)){
-				echo "<div id='mobileNavHeading'><span id='mobileExampleSection'></span><span id='mobileExampleName'></span></div>";
-			}
+			
 			//Cookie message
 			echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
 	    ?>
