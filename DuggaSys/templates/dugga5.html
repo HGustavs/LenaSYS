@@ -52,7 +52,7 @@
                     <td style="visibility: hidden;"><button onclick="moveVertexDown(this.parentNode);">&darr;</button></td>
                     <td style="visibility: hidden;"><button onclick="deleteVertex(this.parentNode);">X</button></td>
                 </tr>  
-                <tr><td style="visibility: hidden;">v00</td><td colspan="3"><button style="width:100%;" onclick="newVertex();">LÄGG TILL</button></td></tr>
+                <tr><td style="visibility: hidden;">v00</td><td colspan="3"><button class="addbutton"style="width:100%;" onclick="newVertex();">LÄGG TILL</button></td></tr>
                 <tr><td style="visibility: hidden;">v00</td><td colspan="6"><p id="vertexMsg" style="min-height:18px"></p></td></tr>
             </tbody>
         </table>    
@@ -84,7 +84,7 @@
                     <td><select style='width:100%;' id="tv3" onchange="checkTriangleInput();"></select></td>
                 </tr>  
                 <tr><td colspan="3"><button id="newTriangleButton" style="width:100%;" onclick="newTriangle();">LÄGG TILL</button></td></tr>
-                <tr><td colspan="3"><button style="float: left;" type="button" onclick="toggleWireframeMode();">Wire-Frame PÅ/AV</button><button style="float: right;" type="button" onclick="toggleRotate();">ROTATION PÅ/AV</button></td></tr>
+                <tr><td colspan="3"><button style="float: left;" class="addbutton" type="button" onclick="toggleWireframeMode();">Wire-Frame PÅ/AV</button><button style="float: right;" class="addbutton" type="button" onclick="toggleRotate();">ROTATION PÅ/AV</button></td></tr>
             </tbody>
         </table>    
         </div>
