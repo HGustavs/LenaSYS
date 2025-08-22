@@ -629,7 +629,7 @@
         <!-- Self Call -->
         <fieldset id="localLoadField">
             <legend aria-hidden="true">Self Call</legend>
-            <div class="placementTypeBoxIcons diagramIcons" id="elementPlacement17" onclick="togglePlacementType(17); setElementPlacementType(17); setMouseMode(mouseModes.PLACING_ELEMENT);">
+            <div class="placementTypeBoxIcons diagramIcons tooltip-target" id="elementPlacement17" onclick="togglePlacementType(17); setElementPlacementType(17); setMouseMode(mouseModes.PLACING_ELEMENT);" data-toolmode="Self_Call" data-toolid="26">
                 <img src="../Shared/icons/diagram_entity.svg" alt="Self Call" />
             </div>
         </fieldset>

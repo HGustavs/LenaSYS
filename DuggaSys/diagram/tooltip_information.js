@@ -149,5 +149,9 @@ const tooltips = {
     "Replay_Exit":{
         header: "Exit",
         description: "Exit the replay-mode. "
+    },
+    "Self_Call":{
+        header: "Self Call",
+        description: "Create a self-referencing relationship for an entity."
     }
 };
